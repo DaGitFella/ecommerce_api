@@ -43,4 +43,5 @@ format = "ruff format ."
 pre_test = 'task lint'
 test = "pytest -s -x --cov=ecommerce_api -vv"
 post_test = 'coverage html'
+pre_run = 'task test'
 run = "fastapi dev ecommerce_api/main.py" 
