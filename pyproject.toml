@@ -1,5 +1,5 @@
 [project]
-name = "eccommerce-api"
+name = "ecommerce-api"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -41,6 +41,6 @@ lint = "ruff check ."
 pre_format = "ruff check --fix"
 format = "ruff format ."
 pre_test = 'task lint'
-test = "pytest -s -x --cov=eccomerce_api -vv"
+test = "pytest -s -x --cov=ecommerce_api -vv"
 post_test = 'coverage html'
-run = "fastapi dev ecommerce_api/app.py" 
+run = "fastapi dev ecommerce_api/main.py" 

@@ -134,7 +134,7 @@ wheels = [
 ]
 
 [[package]]
-name = "eccommerce-api"
+name = "ecommerce-api"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
