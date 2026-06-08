@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     APP_NAME: str = 'E-commerce API'
     APP_VERSION: str = '0.1.0'
     DEBUG: bool = True
-    
+
     # Database settings
-    DATABASE_URL: str 
-    
+    DATABASE_URL: str
