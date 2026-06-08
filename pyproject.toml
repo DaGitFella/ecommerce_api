@@ -1,0 +1,47 @@
+[project]
+name = "ecommerce-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14, <4.0"
+dependencies = [
+    "alembic>=1.18.4",
+    "fastapi[standard]>=0.136.3",
+    "sqlalchemy>=2.0.50",
+]
+
+[dependency-groups]
+dev = [
+    "pydantic-settings>=2.14.1",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.16",
+    "taskipy>=1.14.1",
+]
+
+[tool.ruff]
+line-length = 88
+extend-exclude = ["__pycache__", "build", "dist", ".venv", "migrations"]
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = "single"
+
+[tool.pytest.ini_options]
+pythonpath = '.'
+addopts = '-p no:warnings'
+
+
+[tool.taskipy.tasks]
+lint = "ruff check ."
+pre_format = "ruff check --fix"
+format = "ruff format ."
+pre_test = 'task lint'
+test = "pytest -s -x --cov=ecommerce_api -vv"
+post_test = 'coverage html'
+pre_run = 'task test'
+run = "fastapi dev ecommerce_api/main.py" 
