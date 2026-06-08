@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, registry
 
-from ecommerce_api.core.settings import settings
+from ecommerce_api.core.settings import Settings
 
 table_registry = registry()
 engine = create_engine(
-    settings.DATABASE_URL, echo=True, autocommit=False, autoflush=False
+    Settings().DATABASE_URL, echo=True
 )
 
 
