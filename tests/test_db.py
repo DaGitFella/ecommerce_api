@@ -2,7 +2,7 @@ from dataclasses import asdict
 
 from sqlalchemy import select
 
-from ecommerce_api.models.users import User
+from ecommerce_api.models.users import User, UserRole
 
 
 def test_create_user_must_return_user_object(session, mock_db_time):
@@ -11,7 +11,7 @@ def test_create_user_must_return_user_object(session, mock_db_time):
             name='John Doe',
             email='johndoe@example.com',
             password_hash='hashedpassword',
-            role='customer',
+            role=UserRole.CUSTOMER,
             profile_picture_url='http://example.com/profile.jpg',
         )
         session.add(new_user)
@@ -24,7 +24,7 @@ def test_create_user_must_return_user_object(session, mock_db_time):
             'name': 'John Doe',
             'email': 'johndoe@example.com',
             'password_hash': 'hashedpassword',
-            'role': 'customer',
+            'role': UserRole.CUSTOMER,
             'profile_picture_url': 'http://example.com/profile.jpg',
             'created_at': time,
         }
