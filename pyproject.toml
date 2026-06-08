@@ -7,12 +7,12 @@ requires-python = ">=3.14, <4.0"
 dependencies = [
     "alembic>=1.18.4",
     "fastapi[standard]>=0.136.3",
+    "pydantic-settings>=2.14.1",
     "sqlalchemy>=2.0.50",
 ]
 
 [dependency-groups]
 dev = [
-    "pydantic-settings>=2.14.1",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
     "ruff>=0.15.16",
