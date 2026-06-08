@@ -8,6 +8,7 @@ from ecommerce_api.infrastructure.database import table_registry
 class ProductSpecification:
     __tablename__ = 'product_specifications'
 
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     product_id: Mapped[int] = mapped_column(nullable=False)
     specification_id: Mapped[int] = mapped_column(nullable=False)
     value: Mapped[str] = mapped_column(String(100), nullable=False)

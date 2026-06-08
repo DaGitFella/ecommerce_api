@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 from ecommerce_api.core.settings import Settings
 from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api import models # Import all models to ensure they are registered with the table registry
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
