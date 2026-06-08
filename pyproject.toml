@@ -21,7 +21,7 @@ dev = [
 
 [tool.ruff]
 line-length = 88
-extend-exclude = ["__pycache__", "build", "dist", ".venv", "migrations"]
+extend-exclude = ["build", "dist", ".venv", "migrations"]
 
 [tool.ruff.lint]
 preview = true
