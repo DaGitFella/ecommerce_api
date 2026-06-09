@@ -1,14 +1,14 @@
 from typing import List
 
-from models.users import UserRole
 from pydantic import BaseModel, EmailStr
+
+from ecommerce_api.models.users import UserRole
 
 
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: UserRole
     profile_picture_url: str | None = None
 
 
