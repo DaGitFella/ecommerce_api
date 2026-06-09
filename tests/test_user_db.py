@@ -42,7 +42,7 @@ def test_create_user_must_return_409():
 
     service = UserService(repo)
 
-    with pytest.raises(ConflictError):
+    with pytest.raises(ConflictError): # assert when the method returns an raise
         service.register(
             UserCreate(email='taken@email.com', name='taken', password='senha123')
         )
@@ -56,3 +56,12 @@ def test_deactivate_user(session, user):
     db_user = service.deactivate(id=1)
 
     assert not db_user.is_active
+
+
+def test_deactivate_unavaible_user_must_return_value_error(session):
+    repo = UserRepository(session)
+
+    service = UserService(repo)
+
+    with pytest.raises(ValueError, match='User with id=2 not found'):
+        service.deactivate(id=2)

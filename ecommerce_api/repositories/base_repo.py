@@ -3,6 +3,7 @@ from typing import Any, Generic, Protocol, TypeVar
 from sqlalchemy import delete, select, update
 from sqlalchemy.orm import Mapped, Session
 
+
 class MappedModel(Protocol):
     __tablename__: str
     id: Mapped[int]
