@@ -2,13 +2,13 @@ from http import HTTPStatus
 
 
 def test_get_users_must_return_200_and_random_message(client):
-    response = client.get('/users')
+    response = client.get('/users/')
     assert response.status_code == HTTPStatus.OK
     assert 'message' in response.json()
 
 
 def test_create_user_must_return_201_and_random_message(client):
-    response = client.post('/users')
+    response = client.post('/users/')
     assert response.status_code == HTTPStatus.CREATED
     assert 'message' in response.json()
 
