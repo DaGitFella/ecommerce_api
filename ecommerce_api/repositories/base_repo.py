@@ -2,7 +2,7 @@ from typing import Any, Generic, Protocol, TypeVar
 
 from sqlalchemy import delete, select, update
 from sqlalchemy.orm import Mapped, Session
-
+from ecommerce_api.core.exceptions import NotFoundError
 
 class MappedModel(Protocol):
     __tablename__: str
@@ -25,7 +25,7 @@ class BaseRepository(Generic[ModelT]):
     def get_or_raise(self, id: int) -> ModelT:
         instance = self.get_by_id(id)
         if not instance:
-            raise ValueError(f'{self.model.__name__} with id={id} not found')
+            raise NotFoundError(f'{self.model.__name__} with id={id} not found')
         return instance
 
     def list(
