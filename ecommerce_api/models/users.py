@@ -25,12 +25,16 @@ class User:
     password_hash: Mapped[str] = mapped_column(
         String(255), nullable=False, name='password_hash'
     )
-    role: Mapped[UserRole] = mapped_column(SqlEnum(UserRole), nullable=False)
-    profile_picture_url: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    profile_picture_url: Mapped[str | None] = mapped_column(
+        String(255), nullable=True, default=''
+    )
     created_at: Mapped[datetime] = mapped_column(
         nullable=False, name='created_at', init=False, server_default=func.now()
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    role: Mapped[UserRole] = mapped_column(
+        SqlEnum(UserRole), nullable=False, default=UserRole.CUSTOMER
+    )
 
 
 @table_registry.mapped_as_dataclass
