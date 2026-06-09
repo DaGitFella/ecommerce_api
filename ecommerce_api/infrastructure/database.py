@@ -10,4 +10,9 @@ engine = create_engine(Settings().DATABASE_URL, echo=True)
 def get_db_session():
     """Dependency that provides a database session."""
     with Session(engine) as session:
-        yield session
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
