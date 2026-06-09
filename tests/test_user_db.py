@@ -48,7 +48,7 @@ def test_create_user_must_return_409():
         )
 
 
-def test_deactivate_user_must_return_return(session, user):
+def test_deactivate_user(session, user):
     repo = UserRepository(session)
 
     service = UserService(repo)
