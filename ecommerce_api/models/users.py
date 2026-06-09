@@ -1,8 +1,8 @@
 import enum
 from datetime import datetime
 
+from sqlalchemy import Boolean, String, func
 from sqlalchemy import Enum as SqlEnum
-from sqlalchemy import String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ecommerce_api.infrastructure.database import table_registry
@@ -30,6 +30,7 @@ class User:
     created_at: Mapped[datetime] = mapped_column(
         nullable=False, name='created_at', init=False, server_default=func.now()
     )
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
 @table_registry.mapped_as_dataclass
