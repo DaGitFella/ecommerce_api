@@ -19,12 +19,7 @@ class UserRepository(BaseRepository[User]):
         return self.list(User.is_active, offset=offset, limit=limit)
 
     def create_user(self, data: UserCreate, hashed_password: str) -> User:
-        return self.create(
-            username=data.username,
-            email=data.email,
-            hashed_password=hashed_password,
-            is_active=True,
-        )
+        return self.create(**data.model_dump())
 
     def desactivate(self, id: int):
         return self.session.execute(
