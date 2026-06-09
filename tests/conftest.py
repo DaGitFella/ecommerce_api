@@ -4,7 +4,8 @@ from datetime import datetime
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
+from sqlalchemy.pool import StaticPool
 
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
@@ -18,16 +19,18 @@ def client():
 
 @pytest.fixture
 def session():
-    engine = create_engine('sqlite:///:memory:')
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    engine = create_engine(
+        'sqlite:///:memory:',
+        connect_args={'check_same_thread': False},
+        poolclass=StaticPool,
+    )
+
     table_registry.metadata.create_all(bind=engine)
 
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        table_registry.metadata.drop_all(bind=engine)
-        db.close()
+    with Session(engine) as SessionLocal:
+        yield SessionLocal
+
+    table_registry.metadata.drop_all(engine)
 
 
 @contextmanager
