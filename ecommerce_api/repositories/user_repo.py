@@ -1,4 +1,4 @@
-from sqlalchemy import func, select, update
+from sqlalchemy import func, select
 
 from ecommerce_api.models.users import User
 from ecommerce_api.repositories.base_repo import BaseRepository
@@ -21,12 +21,5 @@ class UserRepository(BaseRepository[User]):
 
     def create_user(self, data: UserCreate, hashed_password: str) -> User:
         return self.create(
-            name=data.name,
-            email=data.email,
-            password_hash=hashed_password
-        )
-
-    def desactivate(self, id: int):
-        return self.session.execute(
-            update(User).where(User.id == id).values(is_active=False)
+            name=data.name, email=data.email, password_hash=hashed_password
         )

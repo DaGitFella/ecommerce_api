@@ -13,3 +13,6 @@ class UserService:
             raise ConflictError(f'Email {data.email} already taken.')
         hashed_password = data.password
         return self.repo.create_user(data, hashed_password)
+
+    def deactivate(self, id: int) -> User:
+        return self.repo.update(id=id, is_active=False)

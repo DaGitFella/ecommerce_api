@@ -17,3 +17,10 @@ class ConflictError(AppError):
         super().__init__(
             message=message, status_code=HTTPStatus.CONFLICT.value, detail=detail
         )
+
+
+class NotFoundError(AppError):
+    def __init__(self, message: str, detail: str | None = None) -> None:
+        super().__init__(
+            message=message, status_code=HTTPStatus.NOT_FOUND.value, detail=detail
+        )

@@ -46,3 +46,13 @@ def test_create_user_must_return_409():
         service.register(
             UserCreate(email='taken@email.com', name='taken', password='senha123')
         )
+
+
+def test_deactivate_user_must_return_return(session, user):
+    repo = UserRepository(session)
+
+    service = UserService(repo)
+
+    db_user = service.deactivate(id=1)
+
+    assert not db_user.is_active

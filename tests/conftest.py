@@ -9,6 +9,7 @@ from sqlalchemy.pool import StaticPool
 
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
+from ecommerce_api.models.users import User
 
 
 @pytest.fixture
@@ -51,3 +52,14 @@ def _mock_db_time(model, timestamp=datetime(2024, 1, 1)):
 @pytest.fixture
 def mock_db_time():
     return _mock_db_time
+
+
+@pytest.fixture
+def user(session) -> User:
+    user = User(email='test@test.com', name='test', password_hash='test123')
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
