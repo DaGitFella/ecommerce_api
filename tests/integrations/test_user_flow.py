@@ -1,6 +1,6 @@
 import pytest
 
-from ecommerce_api.core.exceptions import ConflictError
+from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.models.users import User
 from ecommerce_api.repositories.user_repo import UserRepository
 from ecommerce_api.schemas.user_schema import UserCreate
@@ -63,13 +63,23 @@ def test_deactivate_unavaible_user_must_return_value_error(session):
 
     service = UserService(repo)
 
-    with pytest.raises(ValueError, match='User with id=2 not found'):
+    with pytest.raises(NotFoundError, match='User with id=2 not found'):
         service.deactivate(id=2)
 
-def test_update_user_must_return_user(session):
+
+def test_update_user_must_return_user(session, user):
     repo = UserRepository(session)
-    
+
     service = UserService(repo)
-    
-    
-    
+
+    update_data = User(
+        name='claudio',
+        email='claudio@gmail.com',
+        password_hash='senhadoclaudio',
+    )
+
+    user = service.update_user(id=user.id, data=update_data)
+
+    assert user.name == update_data.name
+    assert user.email == update_data.email
+    assert user.password_hash == update_data.password_hash
