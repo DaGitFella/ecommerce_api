@@ -3,7 +3,7 @@ import pytest
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.models.users import User
 from ecommerce_api.repositories.user_repo import UserRepository
-from ecommerce_api.schemas.user_schema import UserCreate
+from ecommerce_api.schemas.user_schema import UserCreate, UserUpdate
 from ecommerce_api.services.user_services import UserService
 
 
@@ -72,14 +72,23 @@ def test_update_user_must_return_user(session, user):
 
     service = UserService(repo)
 
-    update_data = User(
+    update_data = UserUpdate(
         name='claudio',
         email='claudio@gmail.com',
-        password_hash='senhadoclaudio',
     )
 
     user = service.update_user(id=user.id, data=update_data)
 
     assert user.name == update_data.name
     assert user.email == update_data.email
-    assert user.password_hash == update_data.password_hash
+
+
+def test_update_user_must_return_conflict(session, user, user_two):
+    repo = UserRepository(session)
+
+    service = UserService(repo)
+
+    update_data = UserUpdate(name='test', email='test@test.com')
+
+    with pytest.raises(ConflictError, match='Email test@test.com already taken.'):
+        service.update_user(id=user_two.id, data=update_data)

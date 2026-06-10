@@ -63,3 +63,14 @@ def user(session) -> User:
     session.refresh(user)
 
     return user
+
+
+@pytest.fixture
+def user_two(session) -> User:
+    user = User(email='alice@example.com', name='alice', password_hash='alicepassword')
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
