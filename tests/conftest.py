@@ -10,6 +10,9 @@ from sqlalchemy.pool import StaticPool
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
 from ecommerce_api.models.users import User
+from ecommerce_api.schemas.user_schema import UserCreate
+from ecommerce_api.services.user_services import UserService
+from tests.fakes.fake_user_repo import FakeUserRepo
 
 
 @pytest.fixture
@@ -74,3 +77,24 @@ def user_two(session) -> User:
     session.refresh(user)
 
     return user
+
+
+@pytest.fixture
+def user_service():
+    return UserService(FakeUserRepo())
+
+
+@pytest.fixture
+def fake_repo_with_user():
+    repo = FakeUserRepo()
+
+    user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
+
+    repo.create_user(data=user)
+
+    return repo
+
+
+@pytest.fixture
+def user_service_with_user(fake_repo_with_user):
+    return UserService(fake_repo_with_user)

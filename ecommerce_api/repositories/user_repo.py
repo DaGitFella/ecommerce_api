@@ -19,7 +19,7 @@ class UserRepository(BaseRepository[User]):
     def list_active(self, offset: int = 0, limit: int = 20) -> list[User]:
         return self.list(User.is_active, offset=offset, limit=limit)
 
-    def create_user(self, data: UserCreate, hashed_password: str) -> User:
+    def create_user(self, data: UserCreate) -> User:
         return self.create(
-            name=data.name, email=data.email, password_hash=hashed_password
+            name=data.name, email=data.email, password_hash=data.password
         )

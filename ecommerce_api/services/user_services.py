@@ -11,8 +11,8 @@ class UserService:
     def register(self, data: UserCreate) -> User:
         if self.repo.email_exists(data.email):
             raise ConflictError(f'Email {data.email} already taken.')
-        hashed_password = data.password
-        return self.repo.create_user(data, hashed_password)
+        # do hashing here
+        return self.repo.create_user(data)
 
     def deactivate(self, id: int) -> User:
         return self.repo.update(id=id, is_active=False)
