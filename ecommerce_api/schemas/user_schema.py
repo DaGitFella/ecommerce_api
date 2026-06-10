@@ -23,5 +23,11 @@ class UserPublic(BaseModel):
     is_active: bool
 
 
+class UserUpdate(BaseModel):
+    name: str
+    email: EmailStr
+    profile_picture_url: str | None = None
+
+
 class UserList(BaseModel):
     users: List[UserPublic]
