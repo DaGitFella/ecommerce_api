@@ -31,4 +31,3 @@ def test_update_user_must_return_user(user_service_with_user):
     
     update_data = UserUpdate(name='Claudio', email='bernado')
     
-    service.update_user(id=)
