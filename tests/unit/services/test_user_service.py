@@ -72,3 +72,31 @@ def test_delete_user_must_return_not_found(user_service):
 
     with pytest.raises(NotFoundError):
         service.delete_user(id=1)
+
+
+def test_get_user_must_return_user(user_service_with_users):
+    service = user_service_with_users
+
+    user = service.repo.get_or_raise(1)
+
+    assert hasattr(user, 'email')
+    assert hasattr(user, 'password_hash')
+    assert hasattr(user, 'id')
+    assert hasattr(user, 'name')
+
+
+def test_get_user_must_return_not_found(user_service):
+    service = user_service
+
+    with pytest.raises(NotFoundError):
+        service.repo.get_or_raise(id=1)
+
+
+def test_get_users_must_return_user_list(
+    user_service_with_users, fake_user, fake_user_two
+):
+    service = user_service_with_users
+
+    users = service.repo.list()
+
+    assert users == [fake_user, fake_user_two]
