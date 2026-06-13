@@ -22,3 +22,8 @@ class UserService:
             raise ConflictError(f'Email {data.email} already taken.')
 
         return self.repo.update(id=id, **data.model_dump())
+
+    def delete_user(self, id: int) -> None:
+        user = self.repo.get_or_raise(id=id)
+
+        return self.repo.delete(user.id)
