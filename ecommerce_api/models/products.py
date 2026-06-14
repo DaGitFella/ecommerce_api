@@ -10,7 +10,7 @@ class Product:
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     discount_id: Mapped[int] = mapped_column(nullable=True)
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     description: Mapped[str] = mapped_column(String(255), nullable=True)
     price: Mapped[float] = mapped_column(nullable=False)
     stock: Mapped[int] = mapped_column(nullable=False)
