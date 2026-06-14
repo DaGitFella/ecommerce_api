@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
-from ecommerce_api.models.users import UserRole
+from ecommerce_api.core.constants import UserRole
 
 
 class UserCreate(BaseModel):

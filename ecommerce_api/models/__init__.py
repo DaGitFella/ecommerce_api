@@ -10,3 +10,16 @@ from ecommerce_api.models.repair_job import RepairJob as RepairJob
 from ecommerce_api.models.shopping_cart import ShoppingCart as ShoppingCart
 from ecommerce_api.models.specification_keys import SpecificationKey as SpecificationKey
 from ecommerce_api.models.users import User as User
+
+__all__ = [
+    'CartItem',
+    'Category',
+    'MachineRequest',
+    'Product',
+    'ProductCategory',
+    'ProductSpecification',
+    'RepairJob',
+    'ShoppingCart',
+    'SpecificationKey',
+    'User',
+]

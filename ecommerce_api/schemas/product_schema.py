@@ -14,6 +14,7 @@ class UpdateProduct(BaseModel):
     stock: int
     price: float
 
+
 class PublicProduct(BaseModel):
     id: int
     name: str

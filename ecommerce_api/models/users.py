@@ -1,18 +1,15 @@
-import enum
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, String, func
 from sqlalchemy import Enum as SqlEnum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from ecommerce_api.core.constants import UserRole
 from ecommerce_api.infrastructure.database import table_registry
 
-
-class UserRole(enum.Enum):
-    CUSTOMER = 'customer'
-    EMPLOYEE = 'employee'
-    ADMIN = 'admin'
-    GUEST = 'guest'
+if TYPE_CHECKING:
+    from .shopping_cart import ShoppingCart
 
 
 @table_registry.mapped_as_dataclass
@@ -25,6 +22,7 @@ class User:
     password_hash: Mapped[str] = mapped_column(
         String(255), nullable=False, name='password_hash'
     )
+    shopping_carts: Mapped['ShoppingCart'] = relationship(back_populates='user')
     profile_picture_url: Mapped[str | None] = mapped_column(
         String(255), nullable=True, default=''
     )
