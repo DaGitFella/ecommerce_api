@@ -83,30 +83,22 @@ def user_two(session) -> User:
 def user_service():
     return UserService(FakeUserRepo())
 
+
 @pytest.fixture
 def user_repo():
     return FakeUserRepo()
 
-@pytest.fixture
-def fake_user(repo):
-    user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
-    
-    ...
-
 
 @pytest.fixture
-def fake_user_two():
-    user = UserCreate(email='email@example.com', name='usuario', password='secret')
-    
-    return user
-
-
-@pytest.fixture
-def fake_repo_with_users(fake_user, fake_user_two):
+def fake_repo_with_users():
     repo = FakeUserRepo()
 
-    repo.create_user(data=fake_user)
-    repo.create_user(data=fake_user_two)
+    user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
+
+    user_two = UserCreate(email='email@example.com', name='usuario', password='secret')
+
+    user = repo.create_user(data=user)
+    user_two = repo.create_user(data=user_two)
 
     return repo
 

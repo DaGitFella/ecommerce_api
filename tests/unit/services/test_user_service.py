@@ -92,11 +92,15 @@ def test_get_user_must_return_not_found(user_service):
         service.repo.get_or_raise(id=1)
 
 
-def test_get_users_must_return_user_list(
-    user_service_with_users, fake_user, fake_user_two
-):
+def test_get_users_must_return_user_list(user_service_with_users):
     service = user_service_with_users
 
     users = service.repo.list()
 
-    assert users == [fake_user, fake_user_two]
+    assert isinstance(users, list)
+    assert {user.email for user in users} == {
+        'taken@email.com',
+        'email@example.com',
+    }
+    assert {user.name for user in users} == {'taken', 'usuario'}
+    assert [user.id for user in users] == [1, 2]
