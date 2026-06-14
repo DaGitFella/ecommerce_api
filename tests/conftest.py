@@ -10,8 +10,11 @@ from sqlalchemy.pool import StaticPool
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
 from ecommerce_api.models.users import User
+from ecommerce_api.schemas.product_schema import CreateProduct
 from ecommerce_api.schemas.user_schema import UserCreate
+from ecommerce_api.services.product_service import ProductService
 from ecommerce_api.services.user_services import UserService
+from tests.fakes.fake_product_repo import FakeProductRepo
 from tests.fakes.fake_user_repo import FakeUserRepo
 
 
@@ -97,8 +100,8 @@ def fake_repo_with_users():
 
     user_two = UserCreate(email='email@example.com', name='usuario', password='secret')
 
-    user = repo.create_user(data=user)
-    user_two = repo.create_user(data=user_two)
+    repo.create_user(data=user)
+    repo.create_user(data=user_two)
 
     return repo
 
@@ -106,3 +109,34 @@ def fake_repo_with_users():
 @pytest.fixture
 def user_service_with_users(fake_repo_with_users):
     return UserService(fake_repo_with_users)
+
+
+@pytest.fixture
+def fake_repo_with_products():
+    repo = FakeProductRepo()
+
+    product = CreateProduct(
+        name='maquina legal',
+        description='maquina de alta tração incrivel',
+        price=999,
+        stock=5,
+    )
+
+    product_two = CreateProduct(
+        name='Máquina épica', description='Máquina de baixa tração', price=5, stock=999
+    )
+
+    repo.create_product(product)
+    repo.create_product(product_two)
+
+    return repo
+
+
+@pytest.fixture
+def fake_product_service():
+    return ProductService(FakeProductRepo())
+
+
+@pytest.fixture
+def fake_product_service_with_products(fake_repo_with_products):
+    return ProductService(fake_repo_with_products)
