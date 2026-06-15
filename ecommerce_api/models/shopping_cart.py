@@ -23,7 +23,6 @@ class ShoppingCart:
     shipping_cost: Mapped[float] = mapped_column(nullable=True, default=0)
     shipping_type: Mapped[ShippingTypes] = mapped_column(
         SqlEnum(ShippingTypes),
-        String(50),
         nullable=False,
         default=ShippingTypes.DELIVERY,
     )
