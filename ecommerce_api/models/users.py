@@ -19,6 +19,7 @@ class User:
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    cpf: Mapped[str | None] = mapped_column(String(14), nullable=True, unique=True)
     password_hash: Mapped[str] = mapped_column(
         String(255), nullable=False, name='password_hash'
     )
