@@ -1,24 +1,35 @@
+from typing import List, Optional
+
 from pydantic import BaseModel
 
 
-class CreateProduct(BaseModel):
+class ProductCreate(BaseModel):
+    discount_id: Optional[int] = int | None
     name: str
     description: str
-    stock: int
     price: float
-
-
-class UpdateProduct(BaseModel):
-    name: str
-    description: str
     stock: int
-    price: float
+    image_url: Optional[str] = str | None
 
 
-class PublicProduct(BaseModel):
+class ProductPublic(BaseModel):
     id: int
+    discount_id: Optional[int] = int | None
     name: str
     description: str
-    stock: int
     price: float
-    image_url: str
+    stock: int
+    image_url: Optional[str] = str | None
+
+
+class ProductUpdate(BaseModel):
+    discount_id: Optional[int] = int | None
+    name: str
+    description: str
+    price: float
+    stock: int
+    image_url: Optional[str] = str | None
+
+
+class ProductList(BaseModel):
+    products: List[ProductPublic]
