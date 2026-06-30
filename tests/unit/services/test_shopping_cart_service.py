@@ -1,11 +1,8 @@
 from ecommerce_api.core.constants import ShippingTypes
-
-from ecommerce_api.models.shopping_cart import ShippingTypes
-
 from ecommerce_api.schemas.shopping_cart_schema import (
-    ShoppingCartCreate, ShoppingCartList, ShoppingCartUpdate,
-    ShoppingCartPublic
+    ShoppingCartCreate,
 )
+
 
 def test_get_shopping_cart_must_return_shopping_cart_instance(
     fake_shopping_cart_service_with_items,
@@ -45,34 +42,33 @@ def test_get_shopping_cart_must_return_not_found(
     assert cart.shipping_type == ShippingTypes.DELIVERY
     assert cart.shipping_cost is None
 
+
 def test_get_shopping_cart_list_must_return_list_instance(
-    fake_shopping_cart_service_with_items
+    fake_shopping_cart_service_with_items,
 ):
     service = fake_shopping_cart_service_with_items
-    
+
     cart_list = service.repo.list()
-    
+
     assert isinstance(cart_list, list)
 
-def test_delete_shopping_cart_must_return_None(
-    fake_shopping_cart_service_with_items
-):
+
+def test_delete_shopping_cart_must_return_None(fake_shopping_cart_service_with_items):
     service = fake_shopping_cart_service_with_items
-    
+
     result = service.repo.delete(id=1)
-    
-    assert result == None
+
+    assert result is None
+
 
 def test_update_shopping_cart_must_return_shopping_cart_instance(
-    fake_shopping_cart_service_with_items
+    fake_shopping_cart_service_with_items,
 ):
     service = fake_shopping_cart_service_with_items
-    
-    data = ShoppingCartCreate(
-        shipping_type=ShippingTypes.DELIVERY,
-    )
-    
+
+    data = ShoppingCartCreate(shipping_type=ShippingTypes.DELIVERY)
+
     shopping_cart = service.create_shopping_cart(data)
-    
+
     assert shopping_cart.id == 1
     assert shopping_cart.name == data.shipping_type

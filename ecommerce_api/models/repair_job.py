@@ -1,19 +1,9 @@
-import enum
-
 from sqlalchemy import Enum as SqlEnum
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from ecommerce_api.core.constants import RepairJobStatus
 from ecommerce_api.infrastructure.database import table_registry
-
-
-class RepairJobStatus(enum.Enum):
-    PENDING = 'pending'
-    IN_PROGRESS = 'in_progress'
-    WAITING_PARTS = 'waiting_parts'
-    WAITING_PAYMENT = 'waiting_payment'
-    COMPLETED = 'completed'
-    CANCELLED = 'cancelled'
 
 
 @table_registry.mapped_as_dataclass
