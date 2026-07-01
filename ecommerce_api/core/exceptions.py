@@ -7,6 +7,7 @@ class AppError(Exception):
     message: str
     status_code: int = field(default=HTTPStatus.INTERNAL_SERVER_ERROR.value)
     detail: str | None = None
+    allow: list[str] | None = field(default=None)
 
     def __str__(self) -> str:
         return self.message
@@ -23,4 +24,16 @@ class NotFoundError(AppError):
     def __init__(self, message: str, detail: str | None = None) -> None:
         super().__init__(
             message=message, status_code=HTTPStatus.NOT_FOUND.value, detail=detail
+        )
+
+
+class MethodNotAllowedError(AppError):
+    def __init__(
+        self, message: str, detail: str | None = None, allow: list[str] | None = None
+    ) -> None:
+        super().__init__(
+            message=message,
+            status_code=HTTPStatus.METHOD_NOT_ALLOWED.value,
+            detail=detail,
+            allow=allow,
         )
