@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 
@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     profile_picture_url: str | None = None
+    cpf: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 

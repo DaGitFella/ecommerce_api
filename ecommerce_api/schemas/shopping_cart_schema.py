@@ -18,7 +18,6 @@ class ShoppingCartPublic(BaseModel):
 
 
 class ShoppingCartUpdate(BaseModel):
-    id: int
     shipping_type: ShippingTypes
     shipping_cost: Optional[float] = None
 
