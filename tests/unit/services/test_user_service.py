@@ -4,8 +4,8 @@ from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.schemas.user_schema import UserCreate, UserUpdate
 
 
-def test_create_user_must_return_409(user_service_with_users):
-    service = user_service_with_users
+def test_create_user_must_return_409(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     with pytest.raises(ConflictError):  # assert when the method returns an raise
         service.register(
@@ -13,8 +13,8 @@ def test_create_user_must_return_409(user_service_with_users):
         )
 
 
-def test_create_user_must_return_user(user_service):
-    service = user_service
+def test_create_user_must_return_user(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     db_user = UserCreate(
         name='bernardo', email='bernando@example.com', password='senhadobernardo'
@@ -27,8 +27,8 @@ def test_create_user_must_return_user(user_service):
     assert user.password_hash == db_user.password
 
 
-def test_update_user_must_return_user(user_service_with_users):
-    service = user_service_with_users
+def test_update_user_must_return_user(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     update_data = UserUpdate(name='Claudio', email='bernado@example.com')
 
@@ -39,8 +39,8 @@ def test_update_user_must_return_user(user_service_with_users):
     assert user.name == update_data.name
 
 
-def test_update_user_must_return_not_found(user_service_with_users):
-    service = user_service_with_users
+def test_update_user_must_return_not_found(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     update_data = UserUpdate(name='Claudio', email='bernado@example.com')
 
@@ -48,8 +48,8 @@ def test_update_user_must_return_not_found(user_service_with_users):
         service.update_user(data=update_data, id=3)
 
 
-def test_update_user_must_return_conflict(user_service_with_users):
-    service = user_service_with_users
+def test_update_user_must_return_conflict(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     update_data = UserUpdate(name='Claudio', email='taken@email.com')
 
@@ -57,8 +57,8 @@ def test_update_user_must_return_conflict(user_service_with_users):
         service.update_user(data=update_data, id=2)
 
 
-def test_delete_user_must_return_none(user_service_with_users):
-    service = user_service_with_users
+def test_delete_user_must_return_none(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     user = service.repo.get_by_id(1)
 
@@ -67,15 +67,15 @@ def test_delete_user_must_return_none(user_service_with_users):
     assert result is None
 
 
-def test_delete_user_must_return_not_found(user_service):
-    service = user_service
+def test_delete_user_must_return_not_found(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     with pytest.raises(NotFoundError):
-        service.delete_user(id=1)
+        service.delete_user(id=3)
 
 
-def test_get_user_must_return_user(user_service_with_users):
-    service = user_service_with_users
+def test_get_user_must_return_user(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     user = service.repo.get_or_raise(1)
 
@@ -85,15 +85,15 @@ def test_get_user_must_return_user(user_service_with_users):
     assert hasattr(user, 'name')
 
 
-def test_get_user_must_return_not_found(user_service):
-    service = user_service
+def test_get_user_must_return_not_found(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     with pytest.raises(NotFoundError):
-        service.repo.get_or_raise(id=1)
+        service.repo.get_or_raise(id=3)
 
 
-def test_get_users_must_return_user_list(user_service_with_users):
-    service = user_service_with_users
+def test_get_users_must_return_user_list(fake_user_service_with_users):
+    service = fake_user_service_with_users
 
     users = service.repo.list()
 
@@ -104,3 +104,11 @@ def test_get_users_must_return_user_list(user_service_with_users):
     }
     assert {user.name for user in users} == {'taken', 'usuario'}
     assert [user.id for user in users] == [1, 2]
+
+
+def test_deactivate_user_must_return_user(fake_user_service_with_users):
+    service = fake_user_service_with_users
+
+    user = service.deactivate(id=1)
+
+    assert user.is_active is False
