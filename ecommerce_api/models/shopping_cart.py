@@ -16,10 +16,8 @@ class ShoppingCart:
     __tablename__ = 'shopping_carts'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey('users.id'), nullable=False, init=False
-    )
-    user: Mapped['User'] = relationship(back_populates='shopping_carts')
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=False)
+    user: Mapped['User'] = relationship(back_populates='shopping_cart')
     shipping_cost: Mapped[float] = mapped_column(nullable=True, default=0)
     shipping_type: Mapped[ShippingTypes] = mapped_column(
         SqlEnum(ShippingTypes),

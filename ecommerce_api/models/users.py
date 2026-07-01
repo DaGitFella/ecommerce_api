@@ -19,11 +19,18 @@ class User:
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
-    cpf: Mapped[str | None] = mapped_column(String(14), nullable=True, unique=True)
     password_hash: Mapped[str] = mapped_column(
         String(255), nullable=False, name='password_hash'
     )
-    shopping_carts: Mapped['ShoppingCart'] = relationship(back_populates='user')
+    shopping_cart: Mapped['ShoppingCart'] = relationship(
+        back_populates='user',
+        init=False,
+        uselist=False,
+        cascade='all, delete-orphan, save-update, merge',
+    )
+    cpf: Mapped[str | None] = mapped_column(
+        String(14), nullable=True, unique=True, default=None
+    )
     profile_picture_url: Mapped[str | None] = mapped_column(
         String(255), nullable=True, default=''
     )
