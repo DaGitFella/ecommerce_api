@@ -2,7 +2,7 @@ from sqlalchemy import func, select
 
 from ecommerce_api.models.products import Product
 from ecommerce_api.repositories.base_repo import BaseRepository
-from ecommerce_api.schemas.product_schema import CreateProduct
+from ecommerce_api.schemas.product_schema import ProductCreate
 
 
 class ProductRepository(BaseRepository[Product]):
@@ -16,5 +16,5 @@ class ProductRepository(BaseRepository[Product]):
         result = self.session.execute(select(func.count()).where(Product.name == name))
         return result.scalar_one() > 0
 
-    def create_product(self, data: CreateProduct):
+    def create_product(self, data: ProductCreate):
         return self.create(**data.model_dump())

@@ -1,13 +1,13 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.schemas.product_schema import CreateProduct, UpdateProduct
+from ecommerce_api.schemas.product_schema import ProductCreate, ProductUpdate
 
 
 def test_create_product_must_return_product(fake_product_service):
     service = fake_product_service
 
-    data = CreateProduct(
+    data = ProductCreate(
         name='maquina legal',
         description='maquina de alta tração incrivel',
         price=999,
@@ -28,7 +28,7 @@ def test_create_product_must_return_conflict_error(
 ):
     service = fake_product_service_with_products
 
-    data = CreateProduct(
+    data = ProductCreate(
         name='maquina legal', description='maquina de alta tração', price=999, stock=5
     )
 
@@ -56,7 +56,7 @@ def test_update_product_must_return_product_instance(
 ):
     service = fake_product_service_with_products
 
-    update_data = UpdateProduct(
+    update_data = ProductUpdate(
         name='Maquina sinistra',
         description='Máquina de baixa tração',
         price=5,
@@ -75,7 +75,7 @@ def test_update_product_must_return_product_instance(
 def test_update_product_must_return_conflict_error(fake_product_service_with_products):
     service = fake_product_service_with_products
 
-    update_data = UpdateProduct(
+    update_data = ProductUpdate(
         name='Máquina épica',
         description='Máquina de baixa tração',
         price=5,
