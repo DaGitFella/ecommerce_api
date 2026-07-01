@@ -10,11 +10,13 @@ from sqlalchemy.pool import StaticPool
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
 from ecommerce_api.models.users import User
-from ecommerce_api.schemas.product_schema import CreateProduct
+from ecommerce_api.schemas.product_schema import ProductCreate
 from ecommerce_api.schemas.user_schema import UserCreate
 from ecommerce_api.services.product_service import ProductService
+from ecommerce_api.services.shopping_cart_service import ShoppingCartService
 from ecommerce_api.services.user_services import UserService
 from tests.fakes.fake_product_repo import FakeProductRepo
+from tests.fakes.fake_shopping_cart_repo import FakeShoppingCartRepo
 from tests.fakes.fake_user_repo import FakeUserRepo
 
 
@@ -84,45 +86,36 @@ def user_two(session) -> User:
 
 @pytest.fixture
 def user_service():
-    return UserService(FakeUserRepo())
+    return UserService(FakeUserRepo(), ShoppingCartService(FakeProductRepo()))
 
 
 @pytest.fixture
-def user_repo():
-    return FakeUserRepo()
-
-
-@pytest.fixture
-def fake_repo_with_users():
+def fake_user_service_with_users():
     repo = FakeUserRepo()
+    service = UserService(repo, ShoppingCartService(FakeShoppingCartRepo()))
 
     user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
 
     user_two = UserCreate(email='email@example.com', name='usuario', password='secret')
 
-    repo.create_user(data=user)
-    repo.create_user(data=user_two)
+    service.register(user)
+    service.register(user_two)
 
-    return repo
-
-
-@pytest.fixture
-def user_service_with_users(fake_repo_with_users):
-    return UserService(fake_repo_with_users)
+    return service
 
 
 @pytest.fixture
 def fake_repo_with_products():
     repo = FakeProductRepo()
 
-    product = CreateProduct(
+    product = ProductCreate(
         name='maquina legal',
         description='maquina de alta tração incrivel',
         price=999,
         stock=5,
     )
 
-    product_two = CreateProduct(
+    product_two = ProductCreate(
         name='Máquina épica', description='Máquina de baixa tração', price=5, stock=999
     )
 

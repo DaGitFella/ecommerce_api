@@ -1,74 +1,74 @@
+import pytest
+
 from ecommerce_api.core.constants import ShippingTypes
+from ecommerce_api.core.exceptions import MethodNotAllowedError, NotFoundError
 from ecommerce_api.schemas.shopping_cart_schema import (
-    ShoppingCartCreate,
+    ShoppingCartUpdate,
 )
 
 
 def test_get_shopping_cart_must_return_shopping_cart_instance(
-    fake_shopping_cart_service_with_items,
+    fake_user_service_with_users,
 ):
-    service = fake_shopping_cart_service_with_items
+    user_service = fake_user_service_with_users
+    cart_service = user_service.shopping_cart_service
 
-    cart = service.repo.get_or_raise(id=1)
+    cart = cart_service.repo.get_by_id(id=1)
 
     assert cart.id == 1
     assert cart.user_id == 1
     assert cart.shipping_type == ShippingTypes.DELIVERY
-    assert cart.shipping_cost is None
+    assert cart.shipping_cost == 0
 
 
 def test_get_shopping_cart_by_user_id_must_return_shopping_cart_instance(
-    fake_shopping_cart_service_with_items,
+    fake_user_service_with_users,
 ):
-    service = fake_shopping_cart_service_with_items
+    user_service = fake_user_service_with_users
+    cart_service = user_service.shopping_cart_service
 
-    cart = service.get_by_user_id(id=1)
+    cart = cart_service.repo.get_by_user_id(user_id=1)
 
     assert cart.id == 1
     assert cart.user_id == 1
     assert cart.shipping_type == ShippingTypes.DELIVERY
-    assert cart.shipping_cost is None
+    assert cart.shipping_cost == 0
 
 
 def test_get_shopping_cart_must_return_not_found(
-    fake_shopping_cart_service_with_items,
+    fake_user_service_with_users,
 ):
-    service = fake_shopping_cart_service_with_items
+    service = fake_user_service_with_users.shopping_cart_service
 
-    cart = service.repo.get_or_raise(id=1)
-
-    assert cart.id == 1
-    assert cart.user_id == 1
-    assert cart.shipping_type == ShippingTypes.DELIVERY
-    assert cart.shipping_cost is None
+    with pytest.raises(NotFoundError):
+        service.repo.get_or_raise(id=3)
 
 
 def test_get_shopping_cart_list_must_return_list_instance(
-    fake_shopping_cart_service_with_items,
+    fake_user_service_with_users,
 ):
-    service = fake_shopping_cart_service_with_items
+    service = fake_user_service_with_users.shopping_cart_service
 
     cart_list = service.repo.list()
 
     assert isinstance(cart_list, list)
 
 
-def test_delete_shopping_cart_must_return_None(fake_shopping_cart_service_with_items):
-    service = fake_shopping_cart_service_with_items
+def test_delete_shopping_cart_must_return_None(fake_user_service_with_users):
+    service = fake_user_service_with_users.shopping_cart_service
 
-    result = service.repo.delete(id=1)
-
-    assert result is None
+    with pytest.raises(MethodNotAllowedError):
+        service.delete(id=1)
 
 
 def test_update_shopping_cart_must_return_shopping_cart_instance(
-    fake_shopping_cart_service_with_items,
+    fake_user_service_with_users,
 ):
-    service = fake_shopping_cart_service_with_items
+    service = fake_user_service_with_users.shopping_cart_service
 
-    data = ShoppingCartCreate(shipping_type=ShippingTypes.DELIVERY)
+    data = ShoppingCartUpdate(shipping_type=ShippingTypes.PICKUP)
 
-    shopping_cart = service.create_shopping_cart(data)
+    shopping_cart = service.update_shopping_cart(id=1, data=data)
 
     assert shopping_cart.id == 1
-    assert shopping_cart.name == data.shipping_type
+    assert shopping_cart.shipping_type == data.shipping_type
