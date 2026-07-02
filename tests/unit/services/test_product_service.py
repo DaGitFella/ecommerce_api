@@ -42,6 +42,9 @@ def test_delete_product_must_return_none(fake_product_service_with_products):
     result = service.delete_product(id=1)
 
     assert result is None
+    
+    with pytest.raises(NotFoundError):
+        service.repo.get_or_raise(id=1)
 
 
 def test_delete_product_must_return_not_found(fake_product_service):

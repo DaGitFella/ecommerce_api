@@ -66,6 +66,8 @@ def test_delete_user_must_return_none(fake_user_service_with_users):
 
     assert result is None
 
+    with pytest.raises(NotFoundError):
+        service.repo.get_or_raise(user.id)
 
 def test_delete_user_must_return_not_found(fake_user_service_with_users):
     service = fake_user_service_with_users
