@@ -1,4 +1,4 @@
-from ecommerce_api.models import Product
+from ecommerce_api.products.models import Product
 from ecommerce_api.products.repository import ProductRepository
 from tests.fakes.fake_base_repo import FakeBaseRepository
 
@@ -16,3 +16,6 @@ class FakeProductRepo(FakeBaseRepository[Product], ProductRepository):
             if instance.name == name:
                 product = instance
                 return product
+
+    # def create_product(self, data: ProductCreate) -> Product:
+    #     if data.categories:

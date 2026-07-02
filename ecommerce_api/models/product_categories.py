@@ -1,12 +1,20 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
 from ecommerce_api.infrastructure.database import table_registry
 
-
-@table_registry.mapped_as_dataclass
-class ProductCategory:
-    __tablename__ = 'product_categories'
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
-    product_id: Mapped[int] = mapped_column(nullable=False)
-    category_id: Mapped[int] = mapped_column(nullable=False)
+product_categories = Table(
+    'product_categories',
+    table_registry.metadata,
+    Column(
+        'product_id',
+        Integer,
+        ForeignKey('products.id', ondelete='CASCADE'),
+        primary_key=True,
+    ),
+    Column(
+        'category_id',
+        Integer,
+        ForeignKey('categories.id', ondelete='CASCADE'),
+        primary_key=True,
+    ),
+)

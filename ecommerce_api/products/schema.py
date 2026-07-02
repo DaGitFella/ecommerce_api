@@ -2,6 +2,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
+from ecommerce_api.categories.schema import CategoryCreate
+
 
 class ProductCreate(BaseModel):
     discount_id: Optional[int] = None
@@ -9,6 +11,7 @@ class ProductCreate(BaseModel):
     description: str
     price: float
     stock: int
+    categories: Optional[List[CategoryCreate]] = None
     image_url: Optional[str] = None
 
 

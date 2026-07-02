@@ -1,7 +1,8 @@
 from sqlalchemy import select
 
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
-from ecommerce_api.models import ShoppingCart
+
+from .models import ShoppingCart
 
 
 class ShoppingCartRepository(BaseRepository[ShoppingCart]):

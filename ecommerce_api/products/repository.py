@@ -2,7 +2,8 @@ from sqlalchemy import func, select
 
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
 from ecommerce_api.products.models import Product
-from ecommerce_api.products.schema import ProductCreate
+
+from .schema import ProductCreate
 
 
 class ProductRepository(BaseRepository[Product]):
@@ -16,5 +17,7 @@ class ProductRepository(BaseRepository[Product]):
         result = self.session.execute(select(func.count()).where(Product.name == name))
         return result.scalar_one() > 0
 
-    def create_product(self, data: ProductCreate):
-        return self.create(**data.model_dump())
+    def create_product(self, data: ProductCreate) -> Product:
+        creation_data = data.model_dump(exclude={'categories'})
+
+        return self.create(**creation_data)

@@ -2,14 +2,12 @@ from ecommerce_api.core.exceptions import ConflictError
 from ecommerce_api.shopping_carts.service import ShoppingCartService
 from ecommerce_api.users.models import User
 from ecommerce_api.users.repository import UserRepository
-from ecommerce_api.users.schema import UserCreate, UserUpdate
+from ecommerce_api.users.schema import UserCreate, UserList, UserUpdate
 
 
 class UserService:
     def __init__(
-        self,
-        user_repo: UserRepository,
-        shopping_cart_service: ShoppingCartService
+        self, user_repo: UserRepository, shopping_cart_service: ShoppingCartService
     ) -> None:
         self.repo = user_repo
         self.shopping_cart_service = shopping_cart_service
@@ -34,3 +32,10 @@ class UserService:
         user = self.repo.get_or_raise(id=id)
 
         return self.repo.delete(user.id)
+
+    def get_user_by_id(self, id: int) -> User:
+        return self.repo.get_or_raise(id)
+
+    def list_users(self) -> UserList:
+        users = self.repo.list()
+        return {'users': users}
