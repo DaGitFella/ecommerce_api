@@ -1,6 +1,6 @@
 from ecommerce_api.core.exceptions import ConflictError
-from ecommerce_api.repositories.product_repo import ProductRepository
-from ecommerce_api.schemas.product_schema import ProductCreate, ProductUpdate
+from ecommerce_api.products.repository import ProductRepository
+from ecommerce_api.products.schema import ProductCreate, ProductUpdate
 
 
 class ProductService:

@@ -1,7 +1,7 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.schemas.user_schema import UserCreate, UserUpdate
+from ecommerce_api.users.schema import UserCreate, UserUpdate
 
 
 def test_create_user_must_return_409(fake_user_service_with_users):
@@ -68,6 +68,7 @@ def test_delete_user_must_return_none(fake_user_service_with_users):
 
     with pytest.raises(NotFoundError):
         service.repo.get_or_raise(user.id)
+
 
 def test_delete_user_must_return_not_found(fake_user_service_with_users):
     service = fake_user_service_with_users

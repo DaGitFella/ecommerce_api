@@ -1,5 +1,5 @@
 from ecommerce_api.models import ShoppingCart
-from ecommerce_api.repositories.shopping_cart_repo import ShoppingCartRepository
+from ecommerce_api.shopping_carts.repository import ShoppingCartRepository
 from tests.fakes.fake_base_repo import FakeBaseRepository
 
 

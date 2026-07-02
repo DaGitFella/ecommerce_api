@@ -3,8 +3,8 @@ import typing
 from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.core.exceptions import MethodNotAllowedError
 from ecommerce_api.models import ShoppingCart, User
-from ecommerce_api.repositories.shopping_cart_repo import ShoppingCartRepository
-from ecommerce_api.schemas.shopping_cart_schema import (
+from ecommerce_api.shopping_carts.repository import ShoppingCartRepository
+from ecommerce_api.shopping_carts.schema import (
     ShoppingCartUpdate,
 )
 

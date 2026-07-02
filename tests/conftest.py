@@ -9,12 +9,12 @@ from sqlalchemy.pool import StaticPool
 
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
-from ecommerce_api.models.users import User
-from ecommerce_api.schemas.product_schema import ProductCreate
-from ecommerce_api.schemas.user_schema import UserCreate
-from ecommerce_api.services.product_service import ProductService
-from ecommerce_api.services.shopping_cart_service import ShoppingCartService
-from ecommerce_api.services.user_services import UserService
+from ecommerce_api.users.models import User
+from ecommerce_api.products.schema import ProductCreate
+from ecommerce_api.users.schema import UserCreate
+from ecommerce_api.products.service import ProductService
+from ecommerce_api.shopping_carts.service import ShoppingCartService
+from ecommerce_api.users.service import UserService
 from tests.fakes.fake_product_repo import FakeProductRepo
 from tests.fakes.fake_shopping_cart_repo import FakeShoppingCartRepo
 from tests.fakes.fake_user_repo import FakeUserRepo

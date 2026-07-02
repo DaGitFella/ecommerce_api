@@ -2,7 +2,7 @@ import pytest
 
 from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.core.exceptions import MethodNotAllowedError, NotFoundError
-from ecommerce_api.schemas.shopping_cart_schema import (
+from ecommerce_api.shopping_carts.schema import (
     ShoppingCartUpdate,
 )
 
@@ -54,7 +54,9 @@ def test_get_shopping_cart_list_must_return_list_instance(
     assert isinstance(cart_list, list)
 
 
-def test_delete_shopping_cart_must_return_MethodNotAllowedError(fake_user_service_with_users):
+def test_delete_shopping_cart_must_return_MethodNotAllowedError(
+    fake_user_service_with_users
+):
     service = fake_user_service_with_users.shopping_cart_service
 
     with pytest.raises(MethodNotAllowedError):

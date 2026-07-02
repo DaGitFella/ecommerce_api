@@ -8,7 +8,7 @@ from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.infrastructure.database import table_registry
 
 if TYPE_CHECKING:
-    from .users import User
+    from ..users.models import User
 
 
 @table_registry.mapped_as_dataclass

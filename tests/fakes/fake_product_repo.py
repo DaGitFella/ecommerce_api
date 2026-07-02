@@ -1,5 +1,5 @@
 from ecommerce_api.models import Product
-from ecommerce_api.repositories.product_repo import ProductRepository
+from ecommerce_api.products.repository import ProductRepository
 from tests.fakes.fake_base_repo import FakeBaseRepository
 
 

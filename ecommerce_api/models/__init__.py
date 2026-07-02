@@ -5,11 +5,11 @@ from ecommerce_api.models.product_categories import ProductCategory as ProductCa
 from ecommerce_api.models.product_specifications import (
     ProductSpecification as ProductSpecification,
 )
-from ecommerce_api.models.products import Product as Product
+from ecommerce_api.products.models import Product as Product
 from ecommerce_api.models.repair_job import RepairJob as RepairJob
-from ecommerce_api.models.shopping_cart import ShoppingCart as ShoppingCart
+from ecommerce_api.shopping_carts.models import ShoppingCart as ShoppingCart
 from ecommerce_api.models.specification_keys import SpecificationKey as SpecificationKey
-from ecommerce_api.models.users import User as User
+from ecommerce_api.users.models import User as User
 
 __all__ = [
     'CartItem',

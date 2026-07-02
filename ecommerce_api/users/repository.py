@@ -1,8 +1,8 @@
 from sqlalchemy import func, select
 
-from ecommerce_api.models.users import User
-from ecommerce_api.repositories.base_repo import BaseRepository
-from ecommerce_api.schemas.user_schema import UserCreate
+from ecommerce_api.users.models import User
+from ecommerce_api.infrastructure.repositories.base import BaseRepository
+from ecommerce_api.users.schema import UserCreate
 
 
 class UserRepository(BaseRepository[User]):
@@ -23,3 +23,6 @@ class UserRepository(BaseRepository[User]):
         return self.create(
             name=data.name, email=data.email, password_hash=data.password
         )
+
+    def deactivate(self, id: int) -> User:
+        return self.update(id=id, is_active=False)

@@ -1,7 +1,7 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.schemas.product_schema import ProductCreate, ProductUpdate
+from ecommerce_api.products.schema import ProductCreate, ProductUpdate
 
 
 def test_create_product_must_return_product(fake_product_service):
@@ -42,7 +42,7 @@ def test_delete_product_must_return_none(fake_product_service_with_products):
     result = service.delete_product(id=1)
 
     assert result is None
-    
+
     with pytest.raises(NotFoundError):
         service.repo.get_or_raise(id=1)
 

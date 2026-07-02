@@ -1,5 +1,5 @@
 from ecommerce_api.models import User
-from ecommerce_api.repositories.user_repo import UserRepository
+from ecommerce_api.users.repository import UserRepository
 from tests.fakes.fake_base_repo import FakeBaseRepository
 
 

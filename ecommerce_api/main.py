@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from ecommerce_api.api.routers import users
+from ecommerce_api.users import routes
 from ecommerce_api.core.exceptions import AppError
 
 
@@ -27,7 +27,7 @@ app.title = 'ecommerce api'
 app.version = '0.1'
 app.description = 'trying to build an ecommerce api from scratch'
 
-app.include_router(users.router)
+app.include_router(routes.router)
 
 
 @app.get('/', status_code=200)

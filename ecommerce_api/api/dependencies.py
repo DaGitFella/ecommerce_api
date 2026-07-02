@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from ecommerce_api.infrastructure.database import get_db_session
-from ecommerce_api.repositories.user_repo import UserRepository
+from ecommerce_api.users.repository import UserRepository
 
 DBSession = Annotated[Session, Depends(get_db_session)]
 

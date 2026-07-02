@@ -1,8 +1,8 @@
 from ecommerce_api.core.exceptions import ConflictError
-from ecommerce_api.models.users import User
-from ecommerce_api.repositories.user_repo import UserRepository
-from ecommerce_api.schemas.user_schema import UserCreate, UserUpdate
-from ecommerce_api.services.shopping_cart_service import ShoppingCartService
+from ecommerce_api.users.models import User
+from ecommerce_api.users.repository import UserRepository
+from ecommerce_api.users.schema import UserCreate, UserUpdate
+from ecommerce_api.shopping_carts.service import ShoppingCartService
 
 
 class UserService:
@@ -21,9 +21,6 @@ class UserService:
             user=user
         )  # create default shopping cart for the user
         return user
-
-    def deactivate(self, id: int) -> User:
-        return self.repo.update(id=id, is_active=False)
 
     def update_user(self, id: int, data: UserUpdate) -> User:
         if self.repo.email_exists(data.email):
