@@ -42,19 +42,7 @@ class User:
         SqlEnum(UserRole), nullable=False, default=UserRole.CUSTOMER
     )
 
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.events = []  # Initialize the events list for domain events
-    
-    @property
-    def events(self):
-        return self._events
-    
-    def register_event(self):
-        self._events.append(UserRegisteredEvent(user_id=self.id))
 
-        
 @table_registry.mapped_as_dataclass
 class EmployeeProfile:
     __tablename__ = 'employees'

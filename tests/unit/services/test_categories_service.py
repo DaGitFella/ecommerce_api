@@ -2,8 +2,8 @@ import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.models import Category
-from ecommerce_api.schemas.categorie_schema import CategoryCreate, CategoryUpdate
 from ecommerce_api.products.schema import ProductCreate
+from ecommerce_api.schemas.categorie_schema import CategoryCreate, CategoryUpdate
 
 
 def test_create_category_must_return_category_instance():
@@ -87,7 +87,7 @@ def test_update_category_must_return_category_instance_and_updated_product_categ
     service = SomeService()
 
     category_id = 1
-    
+
     updated_category_data = CategoryUpdate(
         name="Updated Electronics",
         slug="updated-electronics"
@@ -96,15 +96,16 @@ def test_update_category_must_return_category_instance_and_updated_product_categ
     updated_category_instance = service.update_category(
         category_id, updated_category_data
     )
-    
+
     assert isinstance(updated_category_instance, Category)
     assert updated_category_instance.name == updated_category_data.name
     assert updated_category_instance.slug == updated_category_data.slug
 
+
 def test_create_product_with_new_category_must_add_category_to_database():
     product_service = SomeService()
     category_service = product_service.category_service
-    
+
     new_product_data = ProductCreate(
         name="New Product",
         price=100.0,
@@ -112,9 +113,10 @@ def test_create_product_with_new_category_must_add_category_to_database():
         stock=10,
         description="A new test product",
     )
-    
+
     created_product = product_service.create_product(new_product_data)
     created_category = category_service.repo.get_by_slug("new-category")
+
 
 def test_create_product_with_existing_category_must_not_add_category_to_database():
     pass

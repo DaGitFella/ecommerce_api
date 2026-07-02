@@ -1,7 +1,7 @@
 from sqlalchemy import func, select
 
-from ecommerce_api.users.models import User
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
+from ecommerce_api.users.models import User
 from ecommerce_api.users.schema import UserCreate
 
 

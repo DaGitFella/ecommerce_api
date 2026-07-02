@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from ecommerce_api.users import routes
 from ecommerce_api.core.exceptions import AppError
+from ecommerce_api.users import routes
 
 
 def create_app() -> FastAPI:
