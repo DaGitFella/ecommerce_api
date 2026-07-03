@@ -22,6 +22,10 @@ class UserService:
         )  # create default shopping cart for the user
         return user
 
+    def deactivate_user(self, id: int):
+        self.repo.get_or_raise(id)
+        return self.repo.deactivate(id)
+
     def update_user(self, id: int, data: UserUpdate) -> User:
         if self.repo.email_exists(data.email):
             raise ConflictError(f'Email {data.email} already taken.')
@@ -48,7 +52,7 @@ class UserService:
         return {'users': users}
 
     def list_active_users(self, offset: int = 0, limit: int = 20) -> UserList:
-        users = self.repo.list_active
+        users = self.repo.list_active()
 
         return {'users': users}
 
