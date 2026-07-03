@@ -18,6 +18,7 @@ from ecommerce_api.users.models import User
 from ecommerce_api.users.schema import UserCreate
 from ecommerce_api.users.service import UserService
 from tests.fakes.fake_category_repo import FakeCategoryRepo
+from tests.fakes.fake_password_hasher import FakePasswordHasher
 from tests.fakes.fake_product_repo import FakeProductRepo
 from tests.fakes.fake_shopping_cart_repo import FakeShoppingCartRepo
 from tests.fakes.fake_user_repo import FakeUserRepo
@@ -95,7 +96,11 @@ def user_service():
 @pytest.fixture
 def fake_user_service_with_users():
     repo = FakeUserRepo()
-    service = UserService(repo, ShoppingCartService(FakeShoppingCartRepo()))
+    service = UserService(
+        repo,
+        ShoppingCartService(FakeShoppingCartRepo()),
+        password_hash=FakePasswordHasher(),
+    )
 
     user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
 

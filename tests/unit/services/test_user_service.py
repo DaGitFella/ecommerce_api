@@ -16,15 +16,15 @@ def test_create_user_must_return_409(fake_user_service_with_users):
 def test_create_user_must_return_user(fake_user_service_with_users):
     service = fake_user_service_with_users
 
-    db_user = UserCreate(
+    user_data = UserCreate(
         name='bernardo', email='bernando@example.com', password='senhadobernardo'
     )
 
-    user = service.register(db_user)
+    user = service.register(user_data)
 
-    assert user.email == db_user.email
-    assert user.name == db_user.name
-    assert user.password_hash == db_user.password
+    assert user.email == user_data.email
+    assert user.name == user_data.name
+    assert user.password_hash == f'hashed:{user_data.password}'
 
 
 def test_update_user_must_return_user(fake_user_service_with_users):
