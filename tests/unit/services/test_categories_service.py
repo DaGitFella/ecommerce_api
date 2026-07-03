@@ -36,7 +36,7 @@ def test_get_category_by_id_must_return_category_instance(
 
     category_id = 1
 
-    category_instance = service.get_category(category_id)
+    category_instance = service.get_category(id=category_id)
 
     assert isinstance(category_instance, Category)
     assert category_instance.id == category_id

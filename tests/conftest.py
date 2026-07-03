@@ -101,28 +101,31 @@ def fake_user_service_with_users():
 
     user_two = UserCreate(email='email@example.com', name='usuario', password='secret')
 
+    user_three = UserCreate(
+        email='deactive@example.com', name='deactivated', password='hard password'
+    )
+
     service.register(user)
     service.register(user_two)
+    deactivated_user = service.register(user_three)
+
+    service.deactivate_user(deactivated_user.id)
 
     return service
 
 
 @pytest.fixture
-def fake_repo_with_categories():
+def fake_category_service_with_categories():
     repo = FakeCategoryRepo()
+    service = CategoryService(repo)
 
     category = CategoryCreate(name='Electronics', slug='electronics')
     category_two = CategoryCreate(name='Books', slug='books')
 
-    repo.create(**category.model_dump())
-    repo.create(**category_two.model_dump())
+    service.create_category(category)
+    service.create_category(category_two)
 
-    return repo
-
-
-@pytest.fixture
-def fake_category_service_with_categories(fake_repo_with_categories):
-    return CategoryService(fake_repo_with_categories)
+    return service
 
 
 @pytest.fixture

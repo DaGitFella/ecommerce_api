@@ -42,10 +42,12 @@ def test_update_user_must_return_user(fake_user_service_with_users):
 def test_update_user_must_return_not_found(fake_user_service_with_users):
     service = fake_user_service_with_users
 
+    unreachable_id = 999
+
     update_data = UserUpdate(name='Claudio', email='bernado@example.com')
 
     with pytest.raises(NotFoundError):
-        service.update_user(data=update_data, id=3)
+        service.update_user(data=update_data, id=unreachable_id)
 
 
 def test_update_user_must_return_conflict(fake_user_service_with_users):
@@ -57,24 +59,24 @@ def test_update_user_must_return_conflict(fake_user_service_with_users):
         service.update_user(data=update_data, id=2)
 
 
-def test_delete_user_must_return_none(fake_user_service_with_users):
+def test_delete_user_must_raise_not_found_if_deleted(fake_user_service_with_users):
     service = fake_user_service_with_users
 
-    user = service.get_user_by_id(1)
+    user_id = 1
 
-    result = service.delete_user(user.id)
-
-    assert result is None
+    service.delete_user(user_id)
 
     with pytest.raises(NotFoundError):
-        service.get_user_by_id(user.id)
+        service.get_user_by_id(user_id)
 
 
 def test_delete_user_must_return_not_found(fake_user_service_with_users):
     service = fake_user_service_with_users
 
+    unreachable_id = 999
+
     with pytest.raises(NotFoundError):
-        service.delete_user(id=3)
+        service.delete_user(id=unreachable_id)
 
 
 def test_get_user_must_return_user(fake_user_service_with_users):
@@ -91,27 +93,52 @@ def test_get_user_must_return_user(fake_user_service_with_users):
 def test_get_user_must_return_not_found(fake_user_service_with_users):
     service = fake_user_service_with_users
 
+    unreachable_id = 999
+
     with pytest.raises(NotFoundError):
-        service.get_user_by_id(id=3)
+        service.get_user_by_id(id=unreachable_id)
 
 
 def test_get_users_must_return_user_list(fake_user_service_with_users):
     service = fake_user_service_with_users
 
-    users = service.repo.list()
+    user_list = service.list_users()
 
-    assert isinstance(users, list)
-    assert {user.email for user in users} == {
+    assert isinstance(user_list, dict)
+    assert {user.email for user in user_list['users']} == {
         'taken@email.com',
         'email@example.com',
+        'deactive@example.com',
     }
-    assert {user.name for user in users} == {'taken', 'usuario'}
-    assert [user.id for user in users] == [1, 2]
+    assert {user.name for user in user_list['users']} == {
+        'taken',
+        'usuario',
+        'deactivated',
+    }
+    assert [user.id for user in user_list['users']] == [1, 2, 3]
 
 
 def test_deactivate_user_must_return_user(fake_user_service_with_users):
     service = fake_user_service_with_users
 
-    user = service.deactivate(id=1)
+    user = service.deactivate_user(id=1)
 
     assert user.is_active is False
+
+
+def test_deactivate_user_must_return_not_found_error(fake_user_service_with_users):
+    service = fake_user_service_with_users
+
+    unreachable_id = 999
+
+    with pytest.raises(NotFoundError):
+        service.deactivate_user(unreachable_id)
+
+
+def test_list_active_user_must_return_active_users_list(fake_user_service_with_users):
+    service = fake_user_service_with_users
+
+    active_users = service.list_active_users()
+
+    assert 'users' in active_users
+    assert len(active_users['users']) > 0

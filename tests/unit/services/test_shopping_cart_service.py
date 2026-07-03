@@ -40,8 +40,10 @@ def test_get_shopping_cart_must_return_not_found(
 ):
     service = fake_user_service_with_users.shopping_cart_service
 
+    unreachable_id = 999
+
     with pytest.raises(NotFoundError):
-        service.repo.get_or_raise(id=3)
+        service.get_shopping_cart_or_404(unreachable_id)
 
 
 def test_get_shopping_cart_list_must_return_list_instance(
