@@ -3,15 +3,10 @@ import typing
 from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.core.exceptions import MethodNotAllowedError
 from ecommerce_api.shopping_carts.repository import ShoppingCartRepository
-from ecommerce_api.shopping_carts.schema import (
-    ShoppingCartUpdate,
-)
+from ecommerce_api.shopping_carts.schema import ShoppingCartList, ShoppingCartUpdate
 from ecommerce_api.users.models import User
 
 from .models import ShoppingCart
-
-# this is provisory until current user is implemented,
-# then the user_id will be gotten from the current user
 
 
 class ShoppingCartService:
@@ -19,7 +14,6 @@ class ShoppingCartService:
         self.repo = repo
 
     def create_default_shopping_cart(self, user: User) -> ShoppingCart:
-        # User must be gotten from current user whe it's implemented
         return self.repo.create(
             shipping_type=ShippingTypes.DELIVERY, user_id=user.id, user=user
         )
@@ -34,3 +28,10 @@ class ShoppingCartService:
             detail='Deleting shopping cart is not allowed',
             allow=['GET', 'POST', 'PUT'],
         )
+
+    def list_shopping_carts(
+        self, limit: int = 20, offset: int = 0, *filters: any
+    ) -> ShoppingCartList:
+        shopping_carts = self.repo.list(limit=limit, offset=offset, *filters)
+
+        return {'shopping_carts': shopping_carts}

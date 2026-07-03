@@ -1,4 +1,4 @@
-from ecommerce_api.core.exceptions import ConflictError
+from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.shopping_carts.service import ShoppingCartService
 from ecommerce_api.users.models import User
 from ecommerce_api.users.repository import UserRepository
@@ -36,6 +36,23 @@ class UserService:
     def get_user_by_id(self, id: int) -> User:
         return self.repo.get_or_raise(id)
 
-    def list_users(self) -> UserList:
-        users = self.repo.list()
+    def get_user_by_email(self, email: str) -> User:
+        user = self.repo.get_by_email(email)
+        if not user:
+            raise NotFoundError(detail=f'user with email {email} not found')
+
+        return user
+
+    def list_users(self, offset: int = 0, limit: int = 20, *filters: any) -> UserList:
+        users = self.repo.list(offset=offset, limit=limit, *filters)
+        return {'users': users}
+
+    def list_active_users(self, offset: int = 0, limit: int = 20) -> UserList:
+        users = self.repo.list_active
+
+        return {'users': users}
+
+    def list_deactived_users(self, limit: int = 20, offset: int = 0) -> UserList:
+        users = self.repo.list_deactive(offset=offset, limit=limit)
+
         return {'users': users}

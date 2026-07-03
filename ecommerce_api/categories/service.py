@@ -2,7 +2,7 @@ from ecommerce_api.categories.repository import CategoryRepository
 from ecommerce_api.core.exceptions import ConflictError
 
 from .models import Category
-from .schema import CategoryCreate, CategoryUpdate
+from .schema import CategoryCreate, CategoryList, CategoryUpdate
 
 
 class CategoryService:
@@ -48,3 +48,10 @@ class CategoryService:
 
     def get_category(self, slug: str, id: int):
         return self.repo.get_or_raise(slug, id)
+
+    def list_categories(
+        self, limit: int = 20, offset: int = 0, *filters
+    ) -> CategoryList:
+        categories = self.repo.list(limit=limit, offset=offset, *filters)
+
+        return {'categories': categories}

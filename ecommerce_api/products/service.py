@@ -1,7 +1,7 @@
 from ecommerce_api.categories.service import CategoryService
 from ecommerce_api.core.exceptions import ConflictError
 from ecommerce_api.products.repository import ProductRepository
-from ecommerce_api.products.schema import ProductCreate, ProductUpdate
+from ecommerce_api.products.schema import ProductCreate, ProductList, ProductUpdate
 
 
 class ProductService:
@@ -37,3 +37,10 @@ class ProductService:
         product = self.repo.get_or_raise(id)
 
         return self.repo.delete(product.id)
+
+    def list_products(
+        self, limit: int = 20, offset: int = 0, *filters: any
+    ) -> ProductList:
+        products = self.repo.list(limit=limit, offset=offset, *filters)
+
+        return {'products': products}
