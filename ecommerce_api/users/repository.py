@@ -22,9 +22,9 @@ class UserRepository(BaseRepository[User]):
     def list_deactive(self, offset: int = 0, limit: int = 20) -> list[User]:
         return self.list(not User.is_active, offset=offset, limit=limit)
 
-    def create_user(self, data: UserCreate) -> User:
+    def create_user(self, data: UserCreate, password_hash: str) -> User:
         return self.create(
-            name=data.name, email=data.email, password_hash=data.password
+            name=data.name, email=data.email, password_hash=password_hash
         )
 
     def deactivate(self, id: int) -> User:

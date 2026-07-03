@@ -1,4 +1,5 @@
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
+from ecommerce_api.core.security.password_hasher import PasswordHasher
 from ecommerce_api.shopping_carts.service import ShoppingCartService
 from ecommerce_api.users.models import User
 from ecommerce_api.users.repository import UserRepository
@@ -7,16 +8,23 @@ from ecommerce_api.users.schema import UserCreate, UserList, UserUpdate
 
 class UserService:
     def __init__(
-        self, user_repo: UserRepository, shopping_cart_service: ShoppingCartService
+        self,
+        user_repo: UserRepository,
+        shopping_cart_service: ShoppingCartService,
+        password_hash: PasswordHasher,
     ) -> None:
         self.repo = user_repo
         self.shopping_cart_service = shopping_cart_service
+        self.password_hash = password_hash
 
     def register(self, data: UserCreate) -> User:
         if self.repo.email_exists(data.email):
             raise ConflictError(f'Email {data.email} already taken.')
-        # do hashing here
-        user = self.repo.create_user(data)
+
+        hashed_password = self.password_hash.get_password_hash(data.password)
+
+        user = self.repo.create_user(data, hashed_password)
+
         self.shopping_cart_service.create_default_shopping_cart(
             user=user
         )  # create default shopping cart for the user
