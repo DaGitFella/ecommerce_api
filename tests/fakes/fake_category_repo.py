@@ -1,6 +1,6 @@
+from ecommerce_api.core.exceptions import NotFoundError
 from ecommerce_api.domain.categories.models import Category
 from ecommerce_api.domain.categories.repository import CategoryRepository
-from ecommerce_api.core.exceptions import NotFoundError
 from tests.fakes.fake_base_repo import FakeBaseRepository
 
 

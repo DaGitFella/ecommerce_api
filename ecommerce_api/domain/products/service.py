@@ -1,7 +1,11 @@
-from ecommerce_api.domain.categories.service import CategoryService
 from ecommerce_api.core.exceptions import ConflictError
+from ecommerce_api.domain.categories.service import CategoryService
 from ecommerce_api.domain.products.repository import ProductRepository
-from ecommerce_api.domain.products.schema import ProductCreate, ProductList, ProductUpdate
+from ecommerce_api.domain.products.schema import (
+    ProductCreate,
+    ProductList,
+    ProductUpdate,
+)
 
 
 class ProductService:

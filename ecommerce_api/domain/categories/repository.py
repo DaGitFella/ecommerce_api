@@ -1,7 +1,7 @@
 from sqlalchemy import func, select
 
-from ecommerce_api.domain.categories.models import Category
 from ecommerce_api.core.exceptions import NotFoundError
+from ecommerce_api.domain.categories.models import Category
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
 
 from .schema import CategoryCreate

@@ -9,14 +9,14 @@ from sqlalchemy.pool import StaticPool
 
 from ecommerce_api.domain.categories.schema import CategoryCreate
 from ecommerce_api.domain.categories.service import CategoryService
-from ecommerce_api.infrastructure.database import table_registry
-from ecommerce_api.main import app
 from ecommerce_api.domain.products.schema import ProductCreate
 from ecommerce_api.domain.products.service import ProductService
 from ecommerce_api.domain.shopping_carts.service import ShoppingCartService
 from ecommerce_api.domain.users.models import User
 from ecommerce_api.domain.users.schema import UserCreate
 from ecommerce_api.domain.users.service import UserService
+from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.main import app
 from tests.fakes.fake_category_repo import FakeCategoryRepo
 from tests.fakes.fake_password_hasher import FakePasswordHasher
 from tests.fakes.fake_product_repo import FakeProductRepo
