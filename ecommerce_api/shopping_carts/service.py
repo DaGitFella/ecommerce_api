@@ -35,3 +35,6 @@ class ShoppingCartService:
         shopping_carts = self.repo.list(limit=limit, offset=offset, *filters)
 
         return {'shopping_carts': shopping_carts}
+
+    def get_shopping_cart_or_404(self, shopping_cart_id: int) -> ShoppingCart:
+        return self.repo.get_or_raise(shopping_cart_id)
