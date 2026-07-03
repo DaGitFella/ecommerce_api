@@ -1,8 +1,8 @@
 from sqlalchemy import func, select
 
-from ecommerce_api.domain.products.models import Product
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
 
+from .models import Product
 from .schema import ProductCreate
 
 

@@ -1,8 +1,9 @@
 from sqlalchemy import func, select
 
-from ecommerce_api.domain.users.models import User
-from ecommerce_api.domain.users.schema import UserCreate
 from ecommerce_api.infrastructure.repositories.base import BaseRepository
+
+from .models import User
+from .schema import UserCreate
 
 
 class UserRepository(BaseRepository[User]):

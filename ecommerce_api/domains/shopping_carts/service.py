@@ -2,14 +2,14 @@ import typing
 
 from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.core.exceptions import MethodNotAllowedError
-from ecommerce_api.domain.shopping_carts.repository import ShoppingCartRepository
-from ecommerce_api.domain.shopping_carts.schema import (
+from ecommerce_api.domains.users.models import User
+
+from .models import ShoppingCart
+from .repository import ShoppingCartRepository
+from .schema import (
     ShoppingCartList,
     ShoppingCartUpdate,
 )
-from ecommerce_api.domain.users.models import User
-
-from .models import ShoppingCart
 
 
 class ShoppingCartService:

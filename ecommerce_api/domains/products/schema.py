@@ -1,8 +1,7 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
-
 from ecommerce_api.domain.categories.schema import CategoryCreate
+from pydantic import BaseModel
 
 
 class ProductCreate(BaseModel):

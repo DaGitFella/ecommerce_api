@@ -1,11 +1,11 @@
 from ecommerce_api.core.events.bus import EventBus
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.core.security.password_hasher import PasswordHasher
-from ecommerce_api.domain.users.models import User
-from ecommerce_api.domain.users.repository import UserRepository
-from ecommerce_api.domain.users.schema import UserCreate, UserList, UserUpdate
 
 from .events import UserRegistered
+from .models import User
+from .repository import UserRepository
+from .schema import UserCreate, UserList, UserUpdate
 
 
 class UserService:
