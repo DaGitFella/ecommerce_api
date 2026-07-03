@@ -41,13 +41,13 @@ class CategoryService:
         new_category = self.repo.create(**category_data.model_dump())
         return new_category
 
-    def delete_category(self, category_id: int) -> None:
-        category = self.repo.get_or_raise(category_id)
+    def delete_category(self, id: int) -> None:
+        category = self.repo.get_or_raise(id)
 
         self.repo.delete(category.id)
 
-    def get_category(self, slug: str, id: int):
-        return self.repo.get_or_raise(slug, id)
+    def get_category(self, slug: str = None, id: int = None):
+        return self.repo.get_or_raise(slug=slug, id=id)
 
     def list_categories(
         self, limit: int = 20, offset: int = 0, *filters
