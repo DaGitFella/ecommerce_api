@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from ecommerce_api.categories.schema import CategoryCreate
+from ecommerce_api.domain.categories.schema import CategoryCreate
 
 
 class ProductCreate(BaseModel):

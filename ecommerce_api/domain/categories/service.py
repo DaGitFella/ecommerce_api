@@ -1,4 +1,4 @@
-from ecommerce_api.categories.repository import CategoryRepository
+from ecommerce_api.domain.categories.repository import CategoryRepository
 from ecommerce_api.core.exceptions import ConflictError
 
 from .models import Category

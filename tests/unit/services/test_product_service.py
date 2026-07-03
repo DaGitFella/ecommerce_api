@@ -1,7 +1,7 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.products.schema import ProductCreate, ProductUpdate
+from ecommerce_api.domain.products.schema import ProductCreate, ProductUpdate
 
 
 def test_create_product_must_return_product(fake_product_service):

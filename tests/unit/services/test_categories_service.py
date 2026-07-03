@@ -1,9 +1,9 @@
 import pytest
 
-from ecommerce_api.categories.schema import CategoryCreate, CategoryUpdate
+from ecommerce_api.domain.categories.schema import CategoryCreate, CategoryUpdate
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.models import Category
-from ecommerce_api.products.schema import ProductCreate
+from ecommerce_api.domain.products.schema import ProductCreate
 
 
 def test_create_category_must_return_category_instance(fake_category_service):

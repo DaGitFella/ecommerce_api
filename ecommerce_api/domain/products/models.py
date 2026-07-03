@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ecommerce_api.infrastructure.database import table_registry
 
 if TYPE_CHECKING:
-    from ecommerce_api.categories.models import Category
+    from ecommerce_api.domain.categories.models import Category
 
 
 @table_registry.mapped_as_dataclass

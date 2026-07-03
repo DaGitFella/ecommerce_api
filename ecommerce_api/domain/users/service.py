@@ -1,9 +1,9 @@
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.core.security.password_hasher import PasswordHasher
-from ecommerce_api.shopping_carts.service import ShoppingCartService
-from ecommerce_api.users.models import User
-from ecommerce_api.users.repository import UserRepository
-from ecommerce_api.users.schema import UserCreate, UserList, UserUpdate
+from ecommerce_api.domain.shopping_carts.service import ShoppingCartService
+from ecommerce_api.domain.users.models import User
+from ecommerce_api.domain.users.repository import UserRepository
+from ecommerce_api.domain.users.schema import UserCreate, UserList, UserUpdate
 
 
 class UserService:
