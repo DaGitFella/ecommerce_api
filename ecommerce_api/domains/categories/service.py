@@ -1,8 +1,7 @@
-from repository import CategoryRepository
-
 from ecommerce_api.core.exceptions import ConflictError
 
 from .models import Category
+from .repository import CategoryRepository
 from .schema import CategoryCreate, CategoryList, CategoryUpdate
 
 

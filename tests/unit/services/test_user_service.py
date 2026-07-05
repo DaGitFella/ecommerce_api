@@ -1,7 +1,7 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.domain.users.schema import UserCreate, UserUpdate
+from ecommerce_api.domains.users.schema import UserCreate, UserUpdate
 
 
 def test_create_user_must_return_409(fake_user_service_with_users):

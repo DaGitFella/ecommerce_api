@@ -1,8 +1,8 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.domain.categories.schema import CategoryCreate, CategoryUpdate
-from ecommerce_api.domain.products.schema import ProductCreate
+from ecommerce_api.domains.categories.schema import CategoryCreate, CategoryUpdate
+from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.models import Category
 
 

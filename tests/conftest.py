@@ -7,14 +7,14 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from ecommerce_api.domain.categories.schema import CategoryCreate
-from ecommerce_api.domain.categories.service import CategoryService
-from ecommerce_api.domain.products.schema import ProductCreate
-from ecommerce_api.domain.products.service import ProductService
-from ecommerce_api.domain.shopping_carts.service import ShoppingCartService
-from ecommerce_api.domain.users.models import User
-from ecommerce_api.domain.users.schema import UserCreate
-from ecommerce_api.domain.users.service import UserService
+from ecommerce_api.domains.categories.schema import CategoryCreate
+from ecommerce_api.domains.categories.service import CategoryService
+from ecommerce_api.domains.products.schema import ProductCreate
+from ecommerce_api.domains.products.service import ProductService
+from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
+from ecommerce_api.domains.users.models import User
+from ecommerce_api.domains.users.schema import UserCreate
+from ecommerce_api.domains.users.service import UserService
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
 from tests.fakes.fake_category_repo import FakeCategoryRepo

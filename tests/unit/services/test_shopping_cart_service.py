@@ -2,7 +2,7 @@ import pytest
 
 from ecommerce_api.core.constants import ShippingTypes
 from ecommerce_api.core.exceptions import MethodNotAllowedError, NotFoundError
-from ecommerce_api.domain.shopping_carts.schema import (
+from ecommerce_api.domains.shopping_carts.schema import (
     ShoppingCartUpdate,
 )
 
