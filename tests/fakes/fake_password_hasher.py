@@ -1,7 +1,9 @@
 import typing
 
+from ecommerce_api.core.security.password_hasher import PasswordHasher
 
-class FakePasswordHasher:
+
+class FakePasswordHasher(PasswordHasher):
     def __init__(self):
         self.password_context = 5381
 

@@ -8,12 +8,11 @@ from ecommerce_api.domains.shopping_carts.schema import (
 
 
 def test_get_shopping_cart_must_return_shopping_cart_instance(
-    fake_user_service_with_users,
+    fake_shopping_cart_service, fake_user_service_with_users
 ):
-    user_service = fake_user_service_with_users
-    cart_service = user_service.shopping_cart_service
+    cart_service = fake_shopping_cart_service
 
-    cart = cart_service.repo.get_by_id(id=1)
+    cart = cart_service.get_shopping_cart_or_404(id=1)
 
     assert cart.id == 1
     assert cart.user_id == 1

@@ -16,7 +16,7 @@ class ShoppingCartService:
     def __init__(self, repo: ShoppingCartRepository) -> None:
         self.repo = repo
 
-    def create_default_shopping_cart(self, user: User) -> ShoppingCart:
+    async def create_default_shopping_cart(self, user: User) -> ShoppingCart:
         return self.repo.create(
             shipping_type=ShippingTypes.DELIVERY, user_id=user.id, user=user
         )
@@ -32,12 +32,14 @@ class ShoppingCartService:
             allow=['GET', 'POST', 'PUT'],
         )
 
-    def list_shopping_carts(
-        self, limit: int = 20, offset: int = 0, *filters: any
-    ) -> ShoppingCartList:
-        shopping_carts = self.repo.list(limit=limit, offset=offset, *filters)
+    def list_shopping_carts(self, limit: int = 20, offset: int = 0) -> ShoppingCartList:
+        shopping_carts = self.repo.list(limit=limit, offset=offset)
 
-        return {'shopping_carts': shopping_carts}
+        returning_items = ShoppingCartList.model_validate({
+            'shopping_carts': shopping_carts
+        })
 
-    def get_shopping_cart_or_404(self, shopping_cart_id: int) -> ShoppingCart:
-        return self.repo.get_or_raise(shopping_cart_id)
+        return returning_items
+
+    def get_shopping_cart_or_404(self, id: int) -> ShoppingCart:
+        return self.repo.get_or_raise(id)

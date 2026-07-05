@@ -1,7 +1,7 @@
 from ecommerce_api.core.exceptions import NotFoundError
 from ecommerce_api.domains.categories.models import Category
 from ecommerce_api.domains.categories.repository import CategoryRepository
-from tests.fakes.fake_base_repo import FakeBaseRepository
+from tests.fakes.repositories.fake_base_repo import FakeBaseRepository
 
 
 class FakeCategoryRepo(FakeBaseRepository[Category], CategoryRepository):

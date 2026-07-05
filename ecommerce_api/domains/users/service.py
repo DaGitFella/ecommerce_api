@@ -27,7 +27,7 @@ class UserService:
 
         user = self.repo.create_user(data, hashed_password)
 
-        await self.event_bus.publish(UserRegistered(user_id=user.id, email=user.email))
+        await self.event_bus.publish(UserRegistered(user=user, email=user.email))
 
         return user
 

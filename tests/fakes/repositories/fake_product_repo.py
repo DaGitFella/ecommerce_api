@@ -1,6 +1,6 @@
 from ecommerce_api.domains.products.models import Product
 from ecommerce_api.domains.products.repository import ProductRepository
-from tests.fakes.fake_base_repo import FakeBaseRepository
+from tests.fakes.repositories.fake_base_repo import FakeBaseRepository
 
 
 class FakeProductRepo(FakeBaseRepository[Product], ProductRepository):

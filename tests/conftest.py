@@ -11,15 +11,18 @@ from ecommerce_api.domains.categories.schema import CategoryCreate
 from ecommerce_api.domains.categories.service import CategoryService
 from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.domains.products.service import ProductService
+from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
 from ecommerce_api.domains.users.models import User
 from ecommerce_api.domains.users.schema import UserCreate
 from ecommerce_api.domains.users.service import UserService
 from ecommerce_api.infrastructure.database import table_registry
 from ecommerce_api.main import app
-from tests.fakes.fake_category_repo import FakeCategoryRepo
+from tests.fakes.events.fake_event_bus import FakeEventBus
 from tests.fakes.fake_password_hasher import FakePasswordHasher
-from tests.fakes.fake_product_repo import FakeProductRepo
-from tests.fakes.fake_user_repo import FakeUserRepo
+from tests.fakes.repositories.fake_category_repo import FakeCategoryRepo
+from tests.fakes.repositories.fake_product_repo import FakeProductRepo
+from tests.fakes.repositories.fake_shopping_cart_repo import FakeShoppingCartRepo
+from tests.fakes.repositories.fake_user_repo import FakeUserRepo
 
 
 @pytest.fixture
@@ -88,15 +91,16 @@ def user_two(session) -> User:
 
 @pytest.fixture
 def user_service():
-    return UserService(FakeUserRepo(), password_hash=FakePasswordHasher())
+    return UserService(
+        FakeUserRepo(), password_hash=FakePasswordHasher(), event_bus=FakeEventBus()
+    )
 
 
 @pytest.fixture
-def fake_user_service_with_users():
+async def fake_user_service_with_users():
     repo = FakeUserRepo()
     service = UserService(
-        repo,
-        password_hash=FakePasswordHasher(),
+        repo, password_hash=FakePasswordHasher(), event_bus=FakeEventBus()
     )
 
     user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
@@ -107,13 +111,18 @@ def fake_user_service_with_users():
         email='deactive@example.com', name='deactivated', password='hard password'
     )
 
-    service.register(user)
-    service.register(user_two)
-    deactivated_user = service.register(user_three)
+    await service.register(user)
+    await service.register(user_two)
+    deactivated_user = await service.register(user_three)
 
     service.deactivate_user(deactivated_user.id)
 
     return service
+
+
+@pytest.fixture
+def fake_shopping_cart_service():
+    return ShoppingCartService(FakeShoppingCartRepo())
 
 
 @pytest.fixture

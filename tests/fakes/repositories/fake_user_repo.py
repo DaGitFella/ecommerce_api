@@ -1,6 +1,6 @@
 from ecommerce_api.domains.users.repository import UserRepository
 from ecommerce_api.models import User
-from tests.fakes.fake_base_repo import FakeBaseRepository
+from tests.fakes.repositories.fake_base_repo import FakeBaseRepository
 
 
 class FakeUserRepo(FakeBaseRepository[User], UserRepository):
