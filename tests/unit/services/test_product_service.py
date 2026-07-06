@@ -2,9 +2,15 @@ import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.domains.products.schema import ProductCreate, ProductUpdate
+from tests.fakes.events.fake_event_bus import FakeEventBus
+from ecommerce_api.domains.products.service import ProductService
+from ecommerce_api.domains.products.schema import ProductCreate
+from ecommerce_api.domains.products.events import ProductCreated
+from tests.fakes.repositories.fake_product_repo import FakeProductRepo
+from ecommerce_api.domains.categories.schema import CategoryCreate
 
-
-def test_create_product_must_return_product(fake_product_service):
+@pytest.mark.asyncio
+async def test_create_product_must_return_product(fake_product_service):
     service = fake_product_service
 
     data = ProductCreate(
@@ -14,7 +20,7 @@ def test_create_product_must_return_product(fake_product_service):
         stock=5,
     )
 
-    product = service.register_product(data)
+    product = await service.register_product(data)
 
     assert product.id == 1
     assert product.name == data.name
@@ -23,7 +29,33 @@ def test_create_product_must_return_product(fake_product_service):
     assert product.stock == data.stock
 
 
-def test_create_product_must_return_conflict_error(
+@pytest.mark.asyncio
+async def test_create_product_publishes_product_created_event():
+    bus = FakeEventBus()
+    service = ProductService(
+        user_repo=FakeProductRepo(), event_bus=bus
+    )
+
+    test_category = CategoryCreate(
+        name='Eletronicos',
+        slug='eletronics'
+    )
+
+    test_product = ProductCreate(
+        name='test',
+        price=2.99,
+        strock=6,
+        categories=[test_category]
+    )
+
+    await service.register_product(test_product)
+
+    assert len(bus.published) > 0
+    assert isinstance(bus.published[0], ProductCreated)
+    assert bus.published[0].user.id == 1
+
+@pytest.mark.asyncio
+async def test_create_product_must_return_conflict_error(
     fake_product_service_with_products,
 ):
     service = fake_product_service_with_products
@@ -33,7 +65,7 @@ def test_create_product_must_return_conflict_error(
     )
 
     with pytest.raises(ConflictError):
-        service.register_product(data)
+        await service.register_product(data)
 
 
 def test_delete_product_must_return_none(fake_product_service_with_products):
