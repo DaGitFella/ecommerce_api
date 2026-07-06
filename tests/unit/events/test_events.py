@@ -9,6 +9,8 @@ from ecommerce_api.domains.users.events import UserRegistered
 from ecommerce_api.domains.users.models import User
 from tests.fakes.services.fake_category_service import FakeCategoryService
 from tests.fakes.services.fake_shopping_cart_service import FakeCartService
+from ecommerce_api.domains.products.events import ProductCreated
+from ecommerce_api.domains.categories.handlers import CategoryEventHandlers
 
 
 @pytest.mark.asyncio
