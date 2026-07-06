@@ -1,13 +1,13 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
-from ecommerce_api.domains.products.schema import ProductCreate, ProductUpdate
-from tests.fakes.events.fake_event_bus import FakeEventBus
-from ecommerce_api.domains.products.service import ProductService
-from ecommerce_api.domains.products.schema import ProductCreate
-from ecommerce_api.domains.products.events import ProductCreated
-from tests.fakes.repositories.fake_product_repo import FakeProductRepo
 from ecommerce_api.domains.categories.schema import CategoryCreate
+from ecommerce_api.domains.products.events import ProductCreated
+from ecommerce_api.domains.products.schema import ProductCreate, ProductUpdate
+from ecommerce_api.domains.products.service import ProductService
+from tests.fakes.events.fake_event_bus import FakeEventBus
+from tests.fakes.repositories.fake_product_repo import FakeProductRepo
+
 
 @pytest.mark.asyncio
 async def test_create_product_must_return_product(fake_product_service):
@@ -32,20 +32,12 @@ async def test_create_product_must_return_product(fake_product_service):
 @pytest.mark.asyncio
 async def test_create_product_publishes_product_created_event():
     bus = FakeEventBus()
-    service = ProductService(
-        user_repo=FakeProductRepo(), event_bus=bus
-    )
+    service = ProductService(user_repo=FakeProductRepo(), event_bus=bus)
 
-    test_category = CategoryCreate(
-        name='Eletronicos',
-        slug='eletronics'
-    )
+    test_category = CategoryCreate(name='Eletronicos', slug='eletronics')
 
     test_product = ProductCreate(
-        name='test',
-        price=2.99,
-        strock=6,
-        categories=[test_category]
+        name='test', price=2.99, strock=6, categories=[test_category]
     )
 
     await service.register_product(test_product)
@@ -53,6 +45,7 @@ async def test_create_product_publishes_product_created_event():
     assert len(bus.published) > 0
     assert isinstance(bus.published[0], ProductCreated)
     assert bus.published[0].user.id == 1
+
 
 @pytest.mark.asyncio
 async def test_create_product_must_return_conflict_error(

@@ -1,6 +1,6 @@
 import pytest
 
-from ecommerce_api.core.bootstrap import register_event_handlers
+from ecommerce_api.core.bootstrap import EventRegistry
 from ecommerce_api.core.events.bus import EventBus
 from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
 from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
@@ -14,10 +14,11 @@ from tests.fakes.repositories.fake_user_repo import FakeUserRepo
 @pytest.mark.asyncio
 async def test_registering_user_creates_cart_end_to_end():
     bus = EventBus()
+    event_register = EventRegistry(bus)
     cart_repo = FakeShoppingCartRepo()
     cart_handlers = CartEventHandlers(ShoppingCartService(cart_repo))
 
-    register_event_handlers(bus, cart_handlers)
+    event_register.register_all(cart_handlers)
 
     user_service = UserService(FakeUserRepo(), FakePasswordHasher(), event_bus=bus)
 

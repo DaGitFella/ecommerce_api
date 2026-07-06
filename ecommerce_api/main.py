@@ -19,9 +19,9 @@ async def lifespan(app: FastAPI):
         cart_service=ShoppingCartService(ShoppingCartRepository(get_db_session))
     )
     event_register = EventRegistry(event_bus)
-    
+
     event_register.register_all(cart_handlers)
-    
+
     yield
 
 
