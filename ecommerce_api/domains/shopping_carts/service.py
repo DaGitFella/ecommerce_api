@@ -43,3 +43,6 @@ class ShoppingCartService:
 
     def get_shopping_cart_or_404(self, id: int) -> ShoppingCart:
         return self.repo.get_or_raise(id)
+
+    def get_shopping_cart_by_user_id(self, user_id: int) -> ShoppingCart:
+        return self.repo.get_by_user_id(user_id=user_id)
