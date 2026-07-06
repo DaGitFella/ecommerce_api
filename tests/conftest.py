@@ -7,12 +7,10 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from ecommerce_api.core.bootstrap import register_event_handlers
 from ecommerce_api.domains.categories.schema import CategoryCreate
 from ecommerce_api.domains.categories.service import CategoryService
 from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.domains.products.service import ProductService
-from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
 from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
 from ecommerce_api.domains.users.models import User
 from ecommerce_api.domains.users.schema import UserCreate
@@ -102,11 +100,8 @@ def user_service():
 async def fake_user_service_with_users():
     bus = FakeEventBus()
     repo = FakeUserRepo()
-    cart_handlers = CartEventHandlers(ShoppingCartService(FakeShoppingCartRepo()))
 
     service = UserService(repo, password_hash=FakePasswordHasher(), event_bus=bus)
-
-    register_event_handlers(bus, cart_handlers)
 
     user = UserCreate(email='taken@email.com', name='taken', password='alicepassword')
 
