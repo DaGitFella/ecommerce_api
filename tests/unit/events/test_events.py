@@ -2,9 +2,12 @@ import pytest
 
 from ecommerce_api.core.bootstrap import register_event_handlers
 from ecommerce_api.core.events.bus import EventBus
+from ecommerce_api.domains.categories.schema import CategoryCreate
+from ecommerce_api.domains.products.models import Product
 from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
 from ecommerce_api.domains.users.events import UserRegistered
 from ecommerce_api.domains.users.models import User
+from tests.fakes.services.fake_category_service import FakeCategoryService
 from tests.fakes.services.fake_shopping_cart_service import FakeCartService
 
 
@@ -43,3 +46,32 @@ async def test_user_registered_triggers_cart_creation():
     await bus.publish(event)
 
     assert cart_service.calls == [event.user]
+
+
+@pytest.mark.asyncio
+async def test_product_created_triggers_categories_creation():
+    bus = EventBus()
+
+    category_service = FakeCategoryService()
+    category_handlers = CategoryEventHandlers(
+        category_service=category_service
+    )
+
+    register_event_handlers(bus, handler=category_handlers)
+
+    test_category = CategoryCreate(
+        name='Eletronicos',
+        slug='eletronics'
+    )
+
+    test_product = Product(
+        name='test',
+        price=2.99,
+        strock=6,
+        categories=[test_category]
+    )
+
+    event = ProductCreated(categories=test_product.categories)
+    await bus.publish(event)
+
+    assert category_service.calls[1] == event.categories
