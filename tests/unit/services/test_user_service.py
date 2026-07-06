@@ -1,30 +1,54 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
+from ecommerce_api.domains.users.events import UserRegistered
 from ecommerce_api.domains.users.schema import UserCreate, UserUpdate
+from ecommerce_api.domains.users.service import UserService
+from tests.fakes.events.fake_event_bus import FakeEventBus
+from tests.fakes.fake_password_hasher import FakePasswordHasher
+from tests.fakes.repositories.fake_user_repo import FakeUserRepo
 
 
-def test_create_user_must_return_409(fake_user_service_with_users):
+@pytest.mark.asyncio
+async def test_create_user_must_return_409(fake_user_service_with_users):
     service = fake_user_service_with_users
 
     with pytest.raises(ConflictError):  # assert when the method returns an raise
-        service.register(
+        await service.register(
             UserCreate(email='taken@email.com', name='taken', password='senha123')
         )
 
 
-def test_create_user_must_return_user(fake_user_service_with_users):
+async def test_create_user_must_return_user(fake_user_service_with_users):
     service = fake_user_service_with_users
 
     user_data = UserCreate(
         name='bernardo', email='bernando@example.com', password='senhadobernardo'
     )
 
-    user = service.register(user_data)
+    user = await service.register(user_data)
 
     assert user.email == user_data.email
     assert user.name == user_data.name
     assert user.password_hash == f'hashed:{user_data.password}'
+
+
+@pytest.mark.asyncio
+async def test_register_publishes_user_registered_event():
+    bus = FakeEventBus()
+    service = UserService(
+        user_repo=FakeUserRepo(), event_bus=bus, password_hash=FakePasswordHasher()
+    )
+
+    user = UserCreate(
+        email='test@example.com', name='bernado', password='hard_password'
+    )
+
+    await service.register(user)
+
+    assert len(bus.published) > 0
+    assert isinstance(bus.published[0], UserRegistered)
+    assert bus.published[0].user.id == 1
 
 
 def test_update_user_must_return_user(fake_user_service_with_users):
