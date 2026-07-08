@@ -1,7 +1,8 @@
+from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
 from ecommerce_api.domains.users.models import User
 
 
-class FakeCartService:
+class FakeCartService(ShoppingCartService):
     def __init__(self) -> None:
         self.calls: list[User] = []
 

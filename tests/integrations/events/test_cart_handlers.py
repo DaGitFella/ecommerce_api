@@ -18,7 +18,7 @@ async def test_registering_user_creates_cart_end_to_end():
     cart_repo = FakeShoppingCartRepo()
     cart_handlers = CartEventHandlers(ShoppingCartService(cart_repo))
 
-    event_register.register_all(cart_handlers)
+    event_register.register_cart_handler(cart_handlers)
 
     user_service = UserService(FakeUserRepo(), FakePasswordHasher(), event_bus=bus)
 

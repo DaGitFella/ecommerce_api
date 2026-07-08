@@ -10,7 +10,13 @@ class EventRegistry:
         self.event_bus = event_bus
 
     def register_all(
-        self, cart_handler: CartEventHandlers, category_handler: CategoryEventHandlers
+        self, cart_handlers: CartEventHandlers, category_handlers: CategoryEventHandlers
     ):
+        self.register_cart_handler(cart_handlers)
+        self.register_category_handler(category_handlers)
+
+    def register_cart_handler(self, cart_handler: CartEventHandlers):
         self.event_bus.subscribe(UserRegistered, cart_handler.on_user_registration)
+
+    def register_category_handler(self, category_handler: CategoryEventHandlers):
         self.event_bus.subscribe(ProductCreated, category_handler.on_product_created)

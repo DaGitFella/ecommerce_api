@@ -3,7 +3,7 @@ import pytest
 from ecommerce_api.core.bootstrap import EventRegistry
 from ecommerce_api.core.events.bus import EventBus
 from ecommerce_api.domains.categories.handlers import CategoryEventHandlers
-from ecommerce_api.domains.categories.schema import CategoryCreate
+from ecommerce_api.domains.categories.models import Category
 from ecommerce_api.domains.products.events import ProductCreated
 from ecommerce_api.domains.products.models import Product
 from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
@@ -37,7 +37,7 @@ async def test_user_registered_triggers_cart_creation():
     cart_service = FakeCartService()  # records calls instead of hitting a DB
     cart_handlers = CartEventHandlers(cart_service=cart_service)
 
-    event_register.register_all(cart_handlers)
+    event_register.register_cart_handler(cart_handlers)
 
     test_user = User(
         email='test@example.com',
@@ -59,15 +59,16 @@ async def test_product_created_triggers_categories_creation():
     category_service = FakeCategoryService()
     category_handlers = CategoryEventHandlers(category_service=category_service)
 
-    event_register.register_all(category_handlers)
+    event_register.register_category_handler(category_handlers)
 
-    test_category = CategoryCreate(name='Eletronicos', slug='eletronics')
+    test_category = Category(name='Eletronicos', slug='eletronics')
 
-    test_product = Product(
-        name='test', price=2.99, strock=6, categories=[test_category]
-    )
+    test_product = Product(name='test', price=2.99, stock=6, categories=[test_category])
 
     event = ProductCreated(categories=test_product.categories)
+
+    breakpoint()
+
     await bus.publish(event)
 
-    assert category_service.calls[1] == event.categories
+    assert category_service.calls[0] == event.categories
