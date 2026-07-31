@@ -65,10 +65,8 @@ async def test_product_created_triggers_categories_creation():
 
     test_product = Product(name='test', price=2.99, stock=6, categories=[test_category])
 
-    event = ProductCreated(categories=test_product.categories)
-
-    breakpoint()
+    event = ProductCreated(categories=test_product.categories, product=test_product)
 
     await bus.publish(event)
 
-    assert category_service.calls[0] == event.categories
+    assert category_service.calls[0] == event.categories[0]

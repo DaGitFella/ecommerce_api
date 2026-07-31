@@ -32,19 +32,23 @@ async def test_create_product_must_return_product(fake_product_service):
 @pytest.mark.asyncio
 async def test_create_product_publishes_product_created_event():
     bus = FakeEventBus()
-    service = ProductService(user_repo=FakeProductRepo(), event_bus=bus)
+    service = ProductService(repo=FakeProductRepo(), event_bus=bus)
 
     test_category = CategoryCreate(name='Eletronicos', slug='eletronics')
 
     test_product = ProductCreate(
-        name='test', price=2.99, strock=6, categories=[test_category]
+        name='test',
+        price=2.99,
+        stock=6,
+        description='test product',
+        categories=[test_category],
     )
 
     await service.register_product(test_product)
 
     assert len(bus.published) > 0
     assert isinstance(bus.published[0], ProductCreated)
-    assert bus.published[0].user.id == 1
+    assert bus.published[0].product.id == 1
 
 
 @pytest.mark.asyncio

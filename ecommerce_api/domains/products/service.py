@@ -1,6 +1,7 @@
+from ecommerce_api.core.events.bus import EventBus
 from ecommerce_api.core.exceptions import ConflictError
-from ecommerce_api.domains.categories.service import CategoryService
 
+from .events import ProductCreated
 from .repository import ProductRepository
 from .schema import (
     ProductCreate,
@@ -10,26 +11,21 @@ from .schema import (
 
 
 class ProductService:
-    def __init__(
-        self, repo: ProductRepository, category_service: CategoryService
-    ) -> None:
+    def __init__(self, repo: ProductRepository, event_bus: EventBus) -> None:
         self.repo = repo
-        self.category_service = category_service
+        self.event_bus = event_bus
 
-    def register_product(self, data: ProductCreate):
+    async def register_product(self, data: ProductCreate):
         # We need to associate an product specification table
         # We need to check for discount before creating a product
         if self.repo.name_exists(data.name):
             raise ConflictError(f'Product with name {data.name} already registered.')
 
-        categories = [
-            self.category_service.get_or_create_category(cat)
-            for cat in data.categories or []
-        ]
-
         product = self.repo.create_product(data)
 
-        product.categories.extend(categories)
+        await self.event_bus.publish(
+            ProductCreated(categories=data.categories, product=product)
+        )
 
         return product
 

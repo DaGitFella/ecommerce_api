@@ -179,14 +179,12 @@ def fake_repo_with_products():
 
 @pytest.fixture
 def fake_product_service():
-    return ProductService(
-        repo=FakeProductRepo(), category_service=CategoryService(FakeCategoryRepo())
-    )
+    return ProductService(repo=FakeProductRepo(), event_bus=FakeEventBus())
 
 
 @pytest.fixture
 def fake_product_service_with_products(fake_repo_with_products):
     return ProductService(
         repo=fake_repo_with_products,
-        category_service=CategoryService(FakeCategoryRepo()),
+        event_bus=FakeEventBus(),
     )

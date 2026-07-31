@@ -8,7 +8,9 @@ class CategoryEventHandlers:
         self.category_service = category_service
 
     async def on_product_created(self, event: ProductCreated) -> None:
-        [
+        categories = [
             await self.category_service.get_or_create_category(cat)
             for cat in event.categories or []
         ]
+
+        event.product.categories.extend(categories)

@@ -32,7 +32,7 @@ class CategoryService:
 
         return self.repo.update(category_id, **update_data)
 
-    def get_or_create_category(self, category_data: CategoryCreate) -> Category:
+    async def get_or_create_category(self, category_data: CategoryCreate) -> Category:
         existing_category = self.repo.get_by_slug(category_data.slug)
 
         if existing_category:

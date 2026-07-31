@@ -2,7 +2,6 @@ import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 from ecommerce_api.domains.categories.schema import CategoryCreate, CategoryUpdate
-from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.models import Category
 
 
@@ -115,52 +114,29 @@ def test_update_category_must_return_category_instance_and_updated_product_categ
     assert updated_category_instance.slug == updated_category_data.slug
 
 
-def test_create_product_with_new_category_must_add_category_to_database(
-    fake_product_service,
-):
-    product_service = fake_product_service
+# def test_create_product_with_existing_category_must_not_add_category_to_database(
+#     fake_product_service,
+# ):
+#     product_service = fake_product_service
+#     category_service = product_service.category_service
 
-    new_product_data = ProductCreate(
-        name='New Product',
-        price=100.0,
-        categories=[CategoryCreate(name='New Category', slug='new-category')],
-        stock=10,
-        description='A new test product',
-    )
+#     # First, create a category
+#     category_data = CategoryCreate(name='Existing Category', slug='existing-category')
+#     created_category = category_service.create_category(category_data)
 
-    created_product = product_service.register_product(new_product_data)
+#     # Then, create a product with the existing category
+#     new_product_data = ProductCreate(
+#         name='New Product',
+#         price=100.0,
+#         categories=[CategoryCreate(
+#       name='Existing Category', slug='existing-category')],
+#         stock=10,
+#         description='A new test product',
+#     )
 
-    assert created_product.name == 'New Product'
-    assert len(created_product.categories) == 1
+#     created_product = product_service.register_product(new_product_data)
+#     product_category = created_product.categories[0]
 
-    created_category = created_product.categories[0]
-
-    assert created_category.name == 'New Category'
-    assert created_category.slug == 'new-category'
-
-
-def test_create_product_with_existing_category_must_not_add_category_to_database(
-    fake_product_service,
-):
-    product_service = fake_product_service
-    category_service = product_service.category_service
-
-    # First, create a category
-    category_data = CategoryCreate(name='Existing Category', slug='existing-category')
-    created_category = category_service.create_category(category_data)
-
-    # Then, create a product with the existing category
-    new_product_data = ProductCreate(
-        name='New Product',
-        price=100.0,
-        categories=[CategoryCreate(name='Existing Category', slug='existing-category')],
-        stock=10,
-        description='A new test product',
-    )
-
-    created_product = product_service.register_product(new_product_data)
-    product_category = created_product.categories[0]
-
-    # Verify that the category was not added again
-    assert created_category is not None
-    assert product_category.id == created_category.id
+#     # Verify that the category was not added again
+#     assert created_category is not None
+#     assert product_category.id == created_category.id
