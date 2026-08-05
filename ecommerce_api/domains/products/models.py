@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ecommerce_api.infrastructure.database import table_registry
 
 if TYPE_CHECKING:
     from ecommerce_api.domains.categories.models import Category
+    from ecommerce_api.domains.specifications.models import SpecificationKey
 
 
 @table_registry.mapped_as_dataclass
@@ -28,3 +29,22 @@ class Product:
         back_populates='products',
         default_factory=list,
     )
+    specifications: Mapped[list['SpecificationKey']] = relationship(
+        'SpecificationKey',
+        secondary='product_specifications',
+        back_populates='products',
+        default_factory=list,
+    )
+
+
+product_specifications = Table(
+    'product_specifications',
+    table_registry.metadata,
+    Column('product_id', Integer, ForeignKey('products.id'), primary_key=True),
+    Column(
+        'specification_id',
+        Integer,
+        ForeignKey('specification_keys.id'),
+        primary_key=True,
+    ),
+)
