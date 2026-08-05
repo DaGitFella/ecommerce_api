@@ -9,16 +9,6 @@ class CategoryService:
     def __init__(self, category_repo: CategoryRepository) -> None:
         self.repo = category_repo
 
-    def create_category(self, category_data: CategoryCreate) -> Category:
-        if self.repo.slug_exists(category_data.slug):
-            raise ConflictError(
-                f'Category with slug {category_data.slug} already exists.'
-            )
-
-        category_instance = self.repo.create_category(category_data)
-
-        return category_instance
-
     def update_category(
         self, category_id: int, category_data: CategoryUpdate
     ) -> Category:
@@ -38,7 +28,7 @@ class CategoryService:
         if existing_category:
             return existing_category
 
-        new_category = self.repo.create(**category_data.model_dump())
+        new_category = self.repo.create_category(category_data)
         return new_category
 
     def delete_category(self, id: int) -> None:

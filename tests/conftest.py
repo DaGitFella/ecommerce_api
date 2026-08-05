@@ -138,15 +138,15 @@ async def fake_shopping_cart_service():
 
 
 @pytest.fixture
-def fake_category_service_with_categories():
+async def fake_category_service_with_categories():
     repo = FakeCategoryRepo()
     service = CategoryService(repo)
 
     category = CategoryCreate(name='Electronics', slug='electronics')
     category_two = CategoryCreate(name='Books', slug='books')
 
-    service.create_category(category)
-    service.create_category(category_two)
+    await service.get_or_create_category(category)
+    await service.get_or_create_category(category_two)
 
     return service
 

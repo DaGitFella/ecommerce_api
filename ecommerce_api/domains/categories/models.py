@@ -14,7 +14,7 @@ class Category:
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     name: Mapped[str] = mapped_column(nullable=False)
-    slug: Mapped[str] = mapped_column(nullable=False)
+    slug: Mapped[str] = mapped_column(nullable=False, unique=True)
     products: Mapped[list['Product']] = relationship(
         'Product',
         secondary='product_categories',

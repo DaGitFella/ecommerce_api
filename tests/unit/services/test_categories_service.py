@@ -5,27 +5,17 @@ from ecommerce_api.domains.categories.schema import CategoryCreate, CategoryUpda
 from ecommerce_api.models import Category
 
 
-def test_create_category_must_return_category_instance(fake_category_service):
+@pytest.mark.asyncio
+async def test_create_category_must_return_category_instance(fake_category_service):
     service = fake_category_service
 
     new_category_data = CategoryCreate(name='Electronics', slug='electronics')
 
-    result = service.create_category(new_category_data)
+    result = await service.get_or_create_category(new_category_data)
 
     assert isinstance(result, Category)
     assert result.name == 'Electronics'
     assert result.slug == 'electronics'
-
-
-def test_create_category_must_return_conflict_error_if_category_already_exists(
-    fake_category_service_with_categories,
-):
-    service = fake_category_service_with_categories
-
-    existing_category_data = CategoryCreate(name='Electronics', slug='electronics')
-
-    with pytest.raises(ConflictError):
-        service.create_category(existing_category_data)
 
 
 def test_get_category_by_id_must_return_category_instance(
@@ -114,29 +104,16 @@ def test_update_category_must_return_category_instance_and_updated_product_categ
     assert updated_category_instance.slug == updated_category_data.slug
 
 
-# def test_create_product_with_existing_category_must_not_add_category_to_database(
-#     fake_product_service,
-# ):
-#     product_service = fake_product_service
-#     category_service = product_service.category_service
+def test_update_category_must_return_conflict_error(
+    fake_category_service_with_categories,
+):
+    service = fake_category_service_with_categories
 
-#     # First, create a category
-#     category_data = CategoryCreate(name='Existing Category', slug='existing-category')
-#     created_category = category_service.create_category(category_data)
+    category_id = 1
 
-#     # Then, create a product with the existing category
-#     new_product_data = ProductCreate(
-#         name='New Product',
-#         price=100.0,
-#         categories=[CategoryCreate(
-#       name='Existing Category', slug='existing-category')],
-#         stock=10,
-#         description='A new test product',
-#     )
+    updated_category_data = CategoryUpdate(name='Books', slug='books')
 
-#     created_product = product_service.register_product(new_product_data)
-#     product_category = created_product.categories[0]
-
-#     # Verify that the category was not added again
-#     assert created_category is not None
-#     assert product_category.id == created_category.id
+    with pytest.raises(ConflictError):
+        service.update_category(
+            category_id=category_id, category_data=updated_category_data
+        )
