@@ -36,14 +36,16 @@ async def test_get_or_create_specification_should_return_existing_specification(
 
 
 @pytest.mark.asyncio
-async def get_specification_by_slug_should_return_specification_instance(
+async def test_get_specification_by_slug_should_return_specification_instance(
     fake_specifications_service_with_specifications,
 ):
     service = fake_specifications_service_with_specifications
 
     slug = 'color'
 
-    result = await service.get_specification_by_slug(slug)
+    result = await service.get_specification(slug)
+
+    breakpoint()
 
     assert isinstance(result, SpecificationKey)
     assert result.name == 'Color'
@@ -51,14 +53,14 @@ async def get_specification_by_slug_should_return_specification_instance(
 
 
 @pytest.mark.asyncio
-async def get_specification_by_id_should_return_specification_instance(
+async def test_get_specification_by_id_should_return_specification_instance(
     fake_specifications_service_with_specifications,
 ):
     service = fake_specifications_service_with_specifications
 
     specification = await service.get_specification_by_slug('color')
 
-    result = await service.get_specification_by_id(specification.id)
+    result = await service.get_specification(specification.id)
 
     assert isinstance(result, SpecificationKey)
     assert result.name == 'Color'
@@ -66,7 +68,7 @@ async def get_specification_by_id_should_return_specification_instance(
 
 
 @pytest.mark.asyncio
-async def get_specification_by_id_should_return_not_found_error(
+async def test_get_specification_by_id_should_return_not_found_error(
     fake_specifications_service_with_specifications,
 ):
     service = fake_specifications_service_with_specifications
@@ -74,11 +76,11 @@ async def get_specification_by_id_should_return_not_found_error(
     non_existent_id = 999  # An ID that doesn't exist
 
     with pytest.raises(NotFoundError):
-        await service.get_specification_by_id(non_existent_id)
+        await service.get_specification(non_existent_id)
 
 
 @pytest.mark.asyncio
-async def get_specification_by_slug_should_return_not_found_error(
+async def test_get_specification_by_slug_should_return_not_found_error(
     fake_specifications_service_with_specifications,
 ):
     service = fake_specifications_service_with_specifications
@@ -86,4 +88,4 @@ async def get_specification_by_slug_should_return_not_found_error(
     non_existent_slug = 'non-existent'  # A slug that doesn't exist
 
     with pytest.raises(NotFoundError):
-        await service.get_specification_by_slug(non_existent_slug)
+        await service.get_specification(non_existent_slug)
