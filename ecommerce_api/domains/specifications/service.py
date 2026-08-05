@@ -13,9 +13,9 @@ class SpecificationsService:
         self, specification_id: int, specification_data: SpecificationSchema
     ) -> SpecificationKey:
 
-        if self.repo.name_exists(specification_data.name):
+        if self.repo.slug_exists(specification_data.slug):
             raise ConflictError(
-                f'A specification with the name {specification_data.name} \
+                f'A specification with the slug {specification_data.slug} \
                     already exists.'
             )
 
@@ -26,7 +26,7 @@ class SpecificationsService:
     async def get_or_create_specification(
         self, specification_data: SpecificationSchema
     ) -> SpecificationKey:
-        existing_specification = self.repo.get_by_name(specification_data.name)
+        existing_specification = self.repo.get_by_slug(specification_data.slug)
 
         if existing_specification:
             return existing_specification
@@ -39,8 +39,8 @@ class SpecificationsService:
 
         self.repo.delete(specification.id)
 
-    def get_specification(self, name: str = None, id: int = None):
-        return self.repo.get_or_raise(name=name, id=id)
+    def get_specification(self, slug: str = None, id: int = None):
+        return self.repo.get_or_raise(slug=slug, id=id)
 
     def list_specifications(
         self, limit: int = 20, offset: int = 0, *filters

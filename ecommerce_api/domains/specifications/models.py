@@ -14,7 +14,8 @@ class SpecificationKey:
     __tablename__ = 'specification_keys'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
-    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    slug: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     products: Mapped[List[Product]] = relationship(
         secondary='product_specifications',
         back_populates='specification_keys',

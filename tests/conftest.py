@@ -12,6 +12,8 @@ from ecommerce_api.domains.categories.service import CategoryService
 from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.domains.products.service import ProductService
 from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
+from ecommerce_api.domains.specifications.schema import SpecificationSchema
+from ecommerce_api.domains.specifications.service import SpecificationsService
 from ecommerce_api.domains.users.models import User
 from ecommerce_api.domains.users.schema import UserCreate
 from ecommerce_api.domains.users.service import UserService
@@ -22,6 +24,7 @@ from tests.fakes.fake_password_hasher import FakePasswordHasher
 from tests.fakes.repositories.fake_category_repo import FakeCategoryRepo
 from tests.fakes.repositories.fake_product_repo import FakeProductRepo
 from tests.fakes.repositories.fake_shopping_cart_repo import FakeShoppingCartRepo
+from tests.fakes.repositories.fake_specifications_repo import FakeSpecificationsRepo
 from tests.fakes.repositories.fake_user_repo import FakeUserRepo
 
 
@@ -147,6 +150,20 @@ async def fake_category_service_with_categories():
 
     await service.get_or_create_category(category)
     await service.get_or_create_category(category_two)
+
+    return service
+
+
+@pytest.fixture
+async def fake_specifications_service_with_specifications():
+    repo = FakeSpecificationsRepo()
+    service = SpecificationsService(repo)
+
+    specification = SpecificationSchema(name='Color', slug='color')
+    specification_two = SpecificationSchema(name='Size', slug='size')
+
+    await service.get_or_create_specification(specification)
+    await service.get_or_create_specification(specification_two)
 
     return service
 

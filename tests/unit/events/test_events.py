@@ -87,7 +87,7 @@ async def test_product_created_triggers_specifications_creation():
 
     event_register.register_specifications_handler(specifications_handlers)
 
-    test_specification = SpecificationKey(name='Cor')
+    test_specification = SpecificationKey(name='Cor', slug='color')
 
     test_product = Product(
         name='test', price=2.99, stock=6, specification_keys=[test_specification]
