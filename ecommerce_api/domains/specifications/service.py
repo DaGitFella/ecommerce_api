@@ -5,7 +5,7 @@ from .repository import SpecificationKeyRepository
 from .schema import SpecificationList, SpecificationSchema
 
 
-class SpecificationService:
+class SpecificationsService:
     def __init__(self, specifications_repo: SpecificationKeyRepository) -> None:
         self.repo = specifications_repo
 

@@ -12,6 +12,9 @@ from ecommerce_api.domains.categories.service import CategoryService
 from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
 from ecommerce_api.domains.shopping_carts.repository import ShoppingCartRepository
 from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
+from ecommerce_api.domains.specifications.handlers import SpecificationsEventHandlers
+from ecommerce_api.domains.specifications.repository import SpecificationKeyRepository
+from ecommerce_api.domains.specifications.service import SpecificationsService
 from ecommerce_api.domains.users import routes
 from ecommerce_api.infrastructure.database import get_db_session
 
@@ -26,10 +29,18 @@ async def lifespan(app: FastAPI):
         category_service=CategoryService(CategoryRepository(get_db_session))
     )
 
+    specifications_handlers = SpecificationsEventHandlers(
+        specification_service=SpecificationsService(
+            SpecificationKeyRepository(get_db_session)
+        )
+    )
+
     event_register = EventRegistry(event_bus)
 
     event_register.register_all(
-        cart_handlers=cart_handlers, category_handlers=category_handlers
+        cart_handlers=cart_handlers,
+        category_handlers=category_handlers,
+        specifications_handlers=specifications_handlers,
     )
 
     yield
