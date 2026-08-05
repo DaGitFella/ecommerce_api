@@ -8,13 +8,13 @@ product_categories = Table(
     Column(
         'product_id',
         Integer,
-        ForeignKey('products.id', ondelete='CASCADE'),
+        ForeignKey('products.id'),
         primary_key=True,
     ),
     Column(
         'category_id',
         Integer,
-        ForeignKey('categories.id', ondelete='CASCADE'),
+        ForeignKey('categories.id'),
         primary_key=True,
     ),
 )

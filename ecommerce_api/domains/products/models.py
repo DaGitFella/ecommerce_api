@@ -23,13 +23,15 @@ class Product:
     image_url: Mapped[str | None] = mapped_column(
         String(255), nullable=True, default=''
     )
+
     categories: Mapped[list['Category']] = relationship(
         'Category',
         secondary='product_categories',
         back_populates='products',
         default_factory=list,
     )
-    specifications: Mapped[list['SpecificationKey']] = relationship(
+
+    specification_keys: Mapped[list['SpecificationKey']] = relationship(
         'SpecificationKey',
         secondary='product_specifications',
         back_populates='products',
@@ -47,4 +49,5 @@ product_specifications = Table(
         ForeignKey('specification_keys.id'),
         primary_key=True,
     ),
+    Column('value', String(255), nullable=False),
 )
