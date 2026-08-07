@@ -7,6 +7,7 @@ from ecommerce_api.infrastructure.database import table_registry
 
 if TYPE_CHECKING:
     from ecommerce_api.domains.categories.models import Category
+    from ecommerce_api.domains.discount.models import Discount
     from ecommerce_api.domains.specifications.models import SpecificationKey
 
 
@@ -38,6 +39,14 @@ class Product:
         default_factory=list,
     )
 
+    discounts: Mapped[list['Discount']] = relationship(
+        'Discount',
+        secondary='product_discounts',
+        back_populates='products',
+        default_factory=list,
+        nullable=True,
+    )
+
 
 product_specifications = Table(
     'product_specifications',
@@ -50,4 +59,11 @@ product_specifications = Table(
         primary_key=True,
     ),
     Column('value', String(255), nullable=False),
+)
+
+product_discounts = Table(
+    'product_discounts',
+    table_registry.metadata,
+    Column('product_id', Integer, ForeignKey('products.id'), primary_key=True),
+    Column('discount_id', Integer, ForeignKey('discounts.id'), primary_key=True),
 )
