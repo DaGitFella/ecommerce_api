@@ -18,7 +18,8 @@ class FakeSpecificationsRepo(
         return any(spec.slug == slug for spec in self.storage.values())
 
     def get_by_slug(self, slug: str) -> SpecificationKey | None:
-        for id, instance in self.storage.items():
-            if instance.slug == slug:
-                specification = instance
-                return specification
+        specification = next(
+            (spec for spec in self.storage.values() if spec.slug == slug), None
+        )
+
+        return specification

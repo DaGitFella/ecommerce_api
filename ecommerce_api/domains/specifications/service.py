@@ -1,4 +1,4 @@
-from ecommerce_api.core.exceptions import ConflictError
+from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 
 from .models import SpecificationKey
 from .repository import SpecificationKeyRepository
@@ -23,7 +23,7 @@ class SpecificationsService:
 
         return self.repo.update(specification_id, **update_data)
 
-    async def get_or_create_specification(
+    def get_or_create_specification(
         self, specification_data: SpecificationSchema
     ) -> SpecificationKey:
         existing_specification = self.repo.get_by_slug(specification_data.slug)
@@ -39,8 +39,16 @@ class SpecificationsService:
 
         self.repo.delete(specification.id)
 
-    def get_specification(self, slug: str = None, id: int = None):
-        return self.repo.get_or_raise(slug=slug, id=id)
+    def get_specification_by_id(self, id: int) -> SpecificationKey:
+        return self.repo.get_or_raise(id=id)
+
+    def get_specification_by_slug(self, slug: str) -> SpecificationKey:
+        result = self.repo.get_by_slug(slug=slug)
+
+        if not result:
+            raise NotFoundError(f'Specification with slug {slug} not found.')
+
+        return result
 
     def list_specifications(
         self, limit: int = 20, offset: int = 0, *filters

@@ -155,15 +155,15 @@ async def fake_category_service_with_categories():
 
 
 @pytest.fixture
-async def fake_specifications_service_with_specifications():
+def fake_specifications_service_with_specifications():
     repo = FakeSpecificationsRepo()
     service = SpecificationsService(repo)
 
     specification = SpecificationSchema(name='Color', slug='color')
     specification_two = SpecificationSchema(name='Size', slug='size')
 
-    await service.get_or_create_specification(specification)
-    await service.get_or_create_specification(specification_two)
+    service.get_or_create_specification(specification)
+    service.get_or_create_specification(specification_two)
 
     return service
 
