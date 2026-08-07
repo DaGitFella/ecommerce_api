@@ -16,8 +16,6 @@ class ProductService:
         self.event_bus = event_bus
 
     async def register_product(self, data: ProductCreate):
-        # We need to associate an product specification table
-        # We need to check for discount before creating a product
         if self.repo.name_exists(data.name):
             raise ConflictError(f'Product with name {data.name} already registered.')
 
