@@ -10,5 +10,7 @@ class Discount:
     __tablename__ = 'discounts'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     value: Mapped[float] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    slug: Mapped[str] = mapped_column(nullable=False, unique=True)
     start_date: Mapped[datetime] = mapped_column(nullable=False)
     end_date: Mapped[datetime] = mapped_column(nullable=False)
