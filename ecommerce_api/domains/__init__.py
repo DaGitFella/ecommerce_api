@@ -2,6 +2,7 @@ from ecommerce_api.domains.categories.models import Category
 from ecommerce_api.domains.discount.models import Discount
 from ecommerce_api.domains.products.models import (
     Product,
+    product_categories,
     product_discounts,
     product_specifications,
 )
@@ -15,6 +16,7 @@ __all__ = [
     'Category',
     'product_specifications',
     'product_discounts',
+    'product_categories',
     'ShoppingCart',
     'User',
     'SpecificationKey',

@@ -66,3 +66,20 @@ product_discounts = Table(
     Column('product_id', Integer, ForeignKey('products.id'), primary_key=True),
     Column('discount_id', Integer, ForeignKey('discounts.id'), primary_key=True),
 )
+
+product_categories = Table(
+    'product_categories',
+    table_registry.metadata,
+    Column(
+        'product_id',
+        Integer,
+        ForeignKey('products.id'),
+        primary_key=True,
+    ),
+    Column(
+        'category_id',
+        Integer,
+        ForeignKey('categories.id'),
+        primary_key=True,
+    ),
+)

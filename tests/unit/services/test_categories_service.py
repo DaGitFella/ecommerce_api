@@ -1,8 +1,8 @@
 import pytest
 
 from ecommerce_api.core.exceptions import ConflictError, NotFoundError
+from ecommerce_api.domains import Category
 from ecommerce_api.domains.categories.schema import CategoryCreate, CategoryUpdate
-from ecommerce_api.models import Category
 
 
 @pytest.mark.asyncio
