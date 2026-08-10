@@ -25,26 +25,25 @@ class Product:
         String(255), nullable=True, default=''
     )
 
-    categories: Mapped[list['Category']] = relationship(
+    categories: Mapped[list[Category]] = relationship(
         'Category',
         secondary='product_categories',
         back_populates='products',
         default_factory=list,
     )
 
-    specification_keys: Mapped[list['SpecificationKey']] = relationship(
+    specification_keys: Mapped[list[SpecificationKey]] = relationship(
         'SpecificationKey',
         secondary='product_specifications',
         back_populates='products',
         default_factory=list,
     )
 
-    discounts: Mapped[list['Discount']] = relationship(
+    discounts: Mapped[list[Discount]] = relationship(
         'Discount',
         secondary='product_discounts',
         back_populates='products',
         default_factory=list,
-        nullable=True,
     )
 
 
