@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.infrastructure.db.session import table_registry
 
 if TYPE_CHECKING:
     from ecommerce_api.domains.products.models import Product

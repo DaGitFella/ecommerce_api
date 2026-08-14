@@ -16,7 +16,8 @@ from ecommerce_api.domains.specifications.handlers import SpecificationsEventHan
 from ecommerce_api.domains.specifications.repository import SpecificationKeyRepository
 from ecommerce_api.domains.specifications.service import SpecificationsService
 from ecommerce_api.domains.users import routes
-from ecommerce_api.infrastructure.database import get_db_session
+from ecommerce_api.infrastructure.db import models  # noqa: F401
+from ecommerce_api.infrastructure.db.session import get_db_session
 
 
 @asynccontextmanager

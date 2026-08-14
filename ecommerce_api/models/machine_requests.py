@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import Enum as SqlEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
-from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.infrastructure.db.session import table_registry
 
 
 class MachineRequestStatus(enum.Enum):

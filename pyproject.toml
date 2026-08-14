@@ -23,7 +23,7 @@ dev = [
 
 [tool.ruff]
 line-length = 88
-extend-exclude = ["build", "dist", ".venv", "migrations"]
+extend-exclude = ["build", "dist", ".venv", "migrations", "ecommerce_api/infrastructure/db/registry.py"]
 
 [tool.ruff.lint]
 preview = true

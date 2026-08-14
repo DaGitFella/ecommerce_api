@@ -6,7 +6,7 @@ from sqlalchemy import Enum as SqlEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ecommerce_api.core.constants import UserRole
-from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.infrastructure.db.session import table_registry
 
 if TYPE_CHECKING:
     from ..shopping_carts.models import ShoppingCart

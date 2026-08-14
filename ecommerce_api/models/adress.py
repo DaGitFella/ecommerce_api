@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.infrastructure.db.session import table_registry
 
 
 @table_registry.mapped_as_dataclass

@@ -17,7 +17,7 @@ from ecommerce_api.domains.specifications.service import SpecificationsService
 from ecommerce_api.domains.users.models import User
 from ecommerce_api.domains.users.schema import UserCreate
 from ecommerce_api.domains.users.service import UserService
-from ecommerce_api.infrastructure.database import table_registry
+from ecommerce_api.infrastructure.db.session import table_registry
 from ecommerce_api.main import app
 from tests.fakes.events.fake_event_bus import FakeEventBus
 from tests.fakes.fake_password_hasher import FakePasswordHasher
