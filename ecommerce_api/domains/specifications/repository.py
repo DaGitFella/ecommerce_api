@@ -1,12 +1,14 @@
 from sqlalchemy import select
 
-from ecommerce_api.infrastructure.repositories.base import BaseRepository
+from ecommerce_api.infrastructure.repositories.slug_and_name import (
+    BaseSlugAndNameRepository,
+)
 
 from .models import SpecificationKey
 from .schema import SpecificationList
 
 
-class SpecificationKeyRepository(BaseRepository[SpecificationKey]):
+class SpecificationKeyRepository(BaseSlugAndNameRepository[SpecificationKey]):
     model = SpecificationKey
 
     def get_by_product_id(self, product_id: int) -> SpecificationList:
@@ -17,9 +19,3 @@ class SpecificationKeyRepository(BaseRepository[SpecificationKey]):
         response = result.scalars().all()
 
         return SpecificationList(specifications=response)
-
-    def name_exists(self, name: str) -> bool:
-        return self.session.query(self.model).filter_by(name=name).first()
-
-    def get_by_slug(self, slug: str) -> SpecificationKey:
-        return self.session.query(self.model).filter_by(slug=slug).first()

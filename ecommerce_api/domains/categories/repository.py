@@ -1,4 +1,6 @@
-from ecommerce_api.infrastructure.repositories.slug_and_name import BaseSlugAndNameRepository
+from ecommerce_api.infrastructure.repositories.slug_and_name import (
+    BaseSlugAndNameRepository,
+)
 
 from .models import Category
 from .schema import CategoryCreate
