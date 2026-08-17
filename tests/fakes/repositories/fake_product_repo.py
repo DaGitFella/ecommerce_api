@@ -1,21 +1,9 @@
 from ecommerce_api.domains.products.models import Product
 from ecommerce_api.domains.products.repository import ProductRepository
-from tests.fakes.repositories.fake_base_repo import FakeBaseRepository
+from tests.fakes.repositories.fake_slug_and_name_repo import FakeSlugAndNameRepo
 
 
-class FakeProductRepo(FakeBaseRepository[Product], ProductRepository):
+class FakeProductRepo(FakeSlugAndNameRepo[Product], ProductRepository):
     def __init__(self):
         super().__init__()
         self.model = Product
-
-    def name_exists(self, name: str) -> bool:
-        return any(product.name == name for product in self.storage.values())
-
-    def get_by_name(self, name: str) -> Product | None:
-        for id, instance in self.storage.items():
-            if instance.name == name:
-                product = instance
-                return product
-
-    # def create_product(self, data: ProductCreate) -> Product:
-    #     if data.categories:

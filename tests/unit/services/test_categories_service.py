@@ -25,7 +25,7 @@ def test_get_category_by_id_must_return_category_instance(
 
     category_id = 1
 
-    category_instance = service.get_category(id=category_id)
+    category_instance = service.get_category_by_id(id=category_id)
 
     assert isinstance(category_instance, Category)
     assert category_instance.id == category_id
@@ -41,7 +41,7 @@ def test_get_category_by_id_must_return_not_found_error_if_category_does_not_exi
     category_id = 999  # An ID that doesn't exist
 
     with pytest.raises(NotFoundError):
-        service.get_category(category_id)
+        service.get_category_by_id(category_id)
 
 
 def test_get_category_by_slug_must_return_category_instance(
@@ -51,7 +51,7 @@ def test_get_category_by_slug_must_return_category_instance(
 
     category_slug = 'electronics'
 
-    category_instance = service.get_category(category_slug)
+    category_instance = service.get_category_by_slug(category_slug)
 
     assert isinstance(category_instance, Category)
     assert category_instance.slug == category_slug
@@ -66,7 +66,7 @@ def test_get_category_by_slug_must_return_not_found_error_if_category_does_not_e
     category_slug = 'non-existent'
 
     with pytest.raises(NotFoundError):
-        service.get_category(category_slug)
+        service.get_category_by_slug(category_slug)
 
 
 def test_delete_category_must_return_none_and_remove_category_from_products(
@@ -81,7 +81,7 @@ def test_delete_category_must_return_none_and_remove_category_from_products(
     assert result is None
 
     with pytest.raises(NotFoundError):
-        service.get_category(category_id)
+        service.get_category_by_id(category_id)
 
 
 def test_update_category_must_return_category_instance_and_updated_product_categories(

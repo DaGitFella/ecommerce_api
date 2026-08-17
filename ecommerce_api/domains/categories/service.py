@@ -1,4 +1,4 @@
-from ecommerce_api.core.exceptions import ConflictError
+from ecommerce_api.core.exceptions import ConflictError, NotFoundError
 
 from .models import Category
 from .repository import CategoryRepository
@@ -36,8 +36,16 @@ class CategoryService:
 
         self.repo.delete(category.id)
 
-    def get_category(self, slug: str = None, id: int = None):
-        return self.repo.get_or_raise(slug=slug, id=id)
+    def get_category_by_id(self, id: int):
+        return self.repo.get_or_raise(id=id)
+
+    def get_category_by_slug(self, slug: str):
+        instance = self.repo.get_by_slug(slug)
+
+        if not instance:
+            raise NotFoundError(f'Category with slug {slug} not found')
+
+        return instance
 
     def list_categories(
         self, limit: int = 20, offset: int = 0, *filters

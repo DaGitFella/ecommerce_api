@@ -19,6 +19,9 @@ class FakeSlugAndNameRepo(FakeBaseRepository[NameAndSlugIT]):
     def slug_exists(self, slug: str) -> bool:
         return any(category.slug == slug for category in self.storage.values())
 
+    def name_exists(self, name: str) -> bool:
+        return any(category.name == name for category in self.storage.values())
+
     def get_by_slug(self, slug: str) -> NameAndSlugIT | None:
         instance = next(
             (instance for instance in self.storage.values() if instance.slug == slug),
