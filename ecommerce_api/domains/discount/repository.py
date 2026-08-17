@@ -1,10 +1,12 @@
-from ecommerce_api.infrastructure.repositories.base import BaseRepository
+from ecommerce_api.infrastructure.repositories.slug_and_name import (
+    BaseSlugAndNameRepository,
+)
 
 from .models import Discount
 from .schema import DiscountSchema
 
 
-class DiscountRepository(BaseRepository[Discount]):
+class DiscountRepository(BaseSlugAndNameRepository[Discount]):
     model = Discount
 
     def create_discount(self, data: DiscountSchema) -> Discount:
