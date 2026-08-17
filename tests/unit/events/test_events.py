@@ -1,9 +1,13 @@
+from datetime import datetime, timedelta
+
 import pytest
 
 from ecommerce_api.core.bootstrap import EventRegistry
 from ecommerce_api.core.events.bus import EventBus
 from ecommerce_api.domains.categories.handlers import CategoryEventHandlers
 from ecommerce_api.domains.categories.models import Category
+from ecommerce_api.domains.discount.handlers import DiscountEventHandlers
+from ecommerce_api.domains.discount.models import Discount
 from ecommerce_api.domains.products.events import ProductCreated
 from ecommerce_api.domains.products.models import Product
 from ecommerce_api.domains.shopping_carts.handlers import CartEventHandlers
@@ -12,6 +16,7 @@ from ecommerce_api.domains.specifications.models import SpecificationKey
 from ecommerce_api.domains.users.events import UserRegistered
 from ecommerce_api.domains.users.models import User
 from tests.fakes.services.fake_category_service import FakeCategoryService
+from tests.fakes.services.fake_discount_service import FakeDiscountService
 from tests.fakes.services.fake_shopping_cart_service import FakeCartService
 from tests.fakes.services.fake_specification_service import FakeSpecificationsService
 
@@ -100,3 +105,30 @@ async def test_product_created_triggers_specifications_creation():
     await bus.publish(event)
 
     assert specifications_service.calls[0] == event.specifications[0]
+
+
+@pytest.mark.asyncio
+async def test_product_created_triggers_discount_creation():
+    bus = EventBus()
+    event_register = EventRegistry(bus)
+
+    discount_service = FakeDiscountService()
+    discount_handlers = DiscountEventHandlers(discount_service=discount_service)
+
+    event_register.register_specifications_handler(discount_handlers)
+
+    test_discount = Discount(
+        value=0.5,
+        slug='fathers_day',
+        name='dia dos pais',
+        start_date=datetime.now(),
+        end_date=datetime.now() + timedelta(days=8),
+    )
+
+    test_product = Product(name='test', price=2.99, stock=6, discounts=[test_discount])
+
+    event = ProductCreated(discounts=test_product.discounts, product=test_product)
+
+    await bus.publish(event)
+
+    assert discount_service.calls[0] == event.discounts[0]
