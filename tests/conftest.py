@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from fastapi.testclient import TestClient
@@ -9,6 +9,8 @@ from sqlalchemy.pool import StaticPool
 
 from ecommerce_api.domains.categories.schema import CategoryCreate
 from ecommerce_api.domains.categories.service import CategoryService
+from ecommerce_api.domains.discount.schema import DiscountSchema
+from ecommerce_api.domains.discount.service import DiscountService
 from ecommerce_api.domains.products.schema import ProductCreate
 from ecommerce_api.domains.products.service import ProductService
 from ecommerce_api.domains.shopping_carts.service import ShoppingCartService
@@ -22,6 +24,7 @@ from ecommerce_api.main import app
 from tests.fakes.events.fake_event_bus import FakeEventBus
 from tests.fakes.fake_password_hasher import FakePasswordHasher
 from tests.fakes.repositories.fake_category_repo import FakeCategoryRepo
+from tests.fakes.repositories.fake_discount_repo import FakeDiscountRepo
 from tests.fakes.repositories.fake_product_repo import FakeProductRepo
 from tests.fakes.repositories.fake_shopping_cart_repo import FakeShoppingCartRepo
 from tests.fakes.repositories.fake_specifications_repo import FakeSpecificationsRepo
@@ -150,6 +153,31 @@ async def fake_category_service_with_categories():
 
     await service.get_or_create_category(category)
     await service.get_or_create_category(category_two)
+
+    return service
+
+
+@pytest.fixture
+async def fake_discount_service_with_discounts():
+    repo = FakeDiscountRepo()
+    service = DiscountService(repo)
+
+    discount_one = DiscountSchema(name='dia do eletronico',
+                                  slug='electronics',
+                                  value=.5,
+                                  start_date=datetime.now(),
+                                  end_date=datetime.now() + timedelta(days=9),
+                                  )
+
+    discount_two = DiscountSchema(name='dia do livro',
+                                  slug='books',
+                                  value=.3,
+                                  start_date=datetime.now(),
+                                  end_date=datetime.now() + timedelta(days=3),
+                                  )
+
+    await service.register_discount(discount_one)
+    await service.register_discount(discount_two)
 
     return service
 
