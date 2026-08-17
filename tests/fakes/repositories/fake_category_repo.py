@@ -1,22 +1,13 @@
 from ecommerce_api.core.exceptions import NotFoundError
 from ecommerce_api.domains.categories.models import Category
 from ecommerce_api.domains.categories.repository import CategoryRepository
-from tests.fakes.repositories.fake_base_repo import FakeBaseRepository
+from tests.fakes.repositories.fake_slug_and_name_repo import FakeSlugAndNameRepo
 
 
-class FakeCategoryRepo(FakeBaseRepository[Category], CategoryRepository):
+class FakeCategoryRepo(FakeSlugAndNameRepo[Category], CategoryRepository):
     def __init__(self):
         super().__init__()
         self.model = Category
-
-    def slug_exists(self, slug: str) -> bool:
-        return any(category.slug == slug for category in self.storage.values())
-
-    def get_by_slug(self, slug: str) -> Category | None:
-        for id, instance in self.storage.items():
-            if instance.slug == slug:
-                category = instance
-                return category
 
     def get_or_raise(self, id: int = None, slug: str = None) -> Category | None:
         if not id and not slug:
