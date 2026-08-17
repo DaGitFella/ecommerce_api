@@ -19,6 +19,14 @@ class DiscountService:
 
         return discount
 
+    async def get_or_create_discount(self, data: DiscountSchema):
+        existing_discount = self.repo.get_by_slug(data.slug)
+        
+        if existing_discount:
+            return existing_discount
+        
+        return self.register_discount(data)
+    
     def update_discount(self, data: DiscountSchema, id: int):
         if self.repo.name_exists(data.name):
             raise ConflictError(f'Discount with name {data.name} already registered.')
